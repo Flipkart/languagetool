@@ -22,6 +22,7 @@ import org.languagetool.AnalyzedSentence;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
 import org.languagetool.rules.Rule;
+import org.languagetool.rules.spelling.SpellingCheckRule;
 import org.languagetool.server.HTTPServer;
 import org.languagetool.server.HTTPServerConfig;
 import org.languagetool.server.PortBindingException;
@@ -38,13 +39,8 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.TextAction;
@@ -374,6 +370,14 @@ public final class Main {
     contentPane.add(insidePanel, cons);
 
     ltSupport = new LanguageToolSupport(this.frame, this.textArea, this.undoRedo);
+    JLanguageTool languageTool = ltSupport.getLanguageTool();
+    for (Rule rule : languageTool.getAllActiveRules()) {
+      if (rule instanceof SpellingCheckRule) {
+        ((SpellingCheckRule) rule).acceptPhrases(Arrays.asList("edede", "pro bite"));
+        System.out.println("done adding the values");
+      }
+    }
+
     ResultAreaHelper.install(messages, ltSupport, resultArea);
     languageBox.selectLanguage(ltSupport.getLanguage());
     languageBox.setEnabled(!ltSupport.getConfig().getAutoDetect());

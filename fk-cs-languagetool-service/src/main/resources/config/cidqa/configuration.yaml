@@ -1,0 +1,111 @@
+c
+database:
+  driverClass: com.mysql.jdbc.Driver
+  user: root
+  # password: fk-abt
+
+  # the JDBC URL
+  url: jdbc:mysql://cx-ims-qa-0002.nm.flipkart.com/matrix
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+  properties:
+      charSet: UTF-8
+      hibernate.show_sql: true
+     # hibernate.hbm2ddl.auto: update
+      hibernate.session.events.log: false
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+  maxConnectionAge : 10s
+  checkConnectionOnBorrow: true
+
+server:
+  applicationConnectors:
+  - type: http
+    port: 6200
+    idleTimeout: 30 seconds
+    acceptorThreads: 1
+    selectorThreads: 2
+    useServerHeader: true
+    useDateHeader: true
+  adminConnectors:
+  - type: http
+    port: 6201
+    idleTimeout: 30 seconds
+    acceptorThreads: 1
+    selectorThreads: 2
+    useServerHeader: true
+    useDateHeader: true
+
+  requestLog:
+    timeZone: IST
+    enabled: true
+    appenders:
+      - type: file
+        currentLogFilename: /var/log/flipkart/erp/fk-crm-matrix/requests.log
+        archivedLogFilenamePattern: /var/log/flipkart/erp/fk-crm-matrix/requests-%d{yyyy-MM-dd}.log
+        timeZone: IST
+
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      logFormat: "%date %highlight(%-5level) [%thread] %cyan(%logger{10}) [%X{profileId}] %msg%n"
+    - type: file
+      currentLogFilename: /var/log/flipkart/erp/fk-crm-matrix/matrix.log
+      archivedLogFilenamePattern: /var/log/flipkart/erp/fk-crm-matrix/matrix-%d{yyyy-MM-dd}.log
+      #archivedFileCount: 30
+      timeZone: IST
+      logFormat: "%date %level [%thread] %logger{10} [%X{profileId}] %msg%n"
+
+
+rotationManagementConfig:
+  persistantFilePath: "/var/log/flipkart/erp/fk-crm-matrix/rotation_status.txt"
+httpClientConfigXMLName: "HttpClientConfig.cidqa.xml"
+
+
+ims:
+  host: "cx-ims-qa-0001.nm.flipkart.com"
+  port: 5500
+  protocol: "http"
+  poolName: "ims"
+  incidentGetApi: "/incidents/"
+  incidentUpdateApi: "/incidents/"
+
+
+maverick:
+  host: "cx-ims-qa-0003.nm.flipkart.com"
+  port: 5000
+  protocol: "http"
+  generalAckMailApi: "/mail/general/ack/"
+  appId: "fk-crm-maverick"
+  exchangeName: "crm_matrix_maverick_qa"
+  exchangeType: "queue"
+  callBackQueue: "crm_maverick_reply_to_qa"
+
+emailConstant:
+  cssEmailChannelId: 1
+  emailChannelId: 9
+  ruleResponseThreadEntryType: 6
+  customerSupportName: "Flipkart Customer Support"
+  customerSupportEmail: "cs@flipkart.com"
+  systemUser: "maverick"
+
+redisConfiguration:
+  clusterName: ims-matrix-redis01.nm.flipkart.com
+  password: matrix
+  clustered: true
+  sentinelServer: ops-redis-sentinel-dc4-1.nm.flipkart.com:26379,ops-redis-sentinel-dc4-2.nm.flipkart.com:26379,ops-redis-sentinel-dc4-3.nm.flipkart.com:26379
+
+tabDataReport: svc_report_8_order_groups_1
+bulkDownloadReport: svc_report_8_order_groups_bulk_1

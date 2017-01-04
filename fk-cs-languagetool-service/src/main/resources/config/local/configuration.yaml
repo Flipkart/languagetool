@@ -1,0 +1,160 @@
+
+database:
+  driverClass: com.mysql.jdbc.Driver
+  user: root
+  #password: fk-abt
+
+  # the JDBC URL
+  url: jdbc:mysql://localhost:3306/languagetool
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+  properties:
+      charSet: UTF-8
+      hibernate.show_sql: true
+      hibernate.hbm2ddl.auto: update
+      hibernate.session.events.log: false
+
+  #  whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+  maxConnectionAge : 10s
+  checkConnectionOnBorrow: true
+
+server:
+  applicationConnectors:
+  - type: http
+    port: 6900
+    idleTimeout: 30 seconds
+    acceptorThreads: 1
+    selectorThreads: 2
+    useServerHeader: true
+    useDateHeader: true
+  adminConnectors:
+  - type: http
+    port: 6901
+    idleTimeout: 30 seconds
+    acceptorThreads: 1
+    selectorThreads: 2
+    useServerHeader: true
+    useDateHeader: true
+
+  requestLog:
+    enabled: true
+    appenders:
+      - type: file
+        currentLogFilename: /var/log/flipkart/erp/fk-cs-languagetool-service/requests.log
+        archivedLogFilenamePattern: /var/log/flipkart/erp/fk-cs-languagetool-service/requests-%d{yyyy-MM-dd}.log
+        timeZone: IST
+
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      logFormat: "%date %highlight(%-5level) [%thread] %cyan(%logger{10}) [%X{id}] %msg%n"
+    - type: file
+      currentLogFilename: /var/log/flipkart/erp/fk-cs-languagetool-service/svc.log
+      archivedLogFilenamePattern: /var/log/flipkart/erp/fk-cs-languagetool-service/svc-%d{yyyy-MM-dd}.log
+      #archivedFileCount: x
+      timeZone: IST
+      logFormat: "%date %highlight(%-5level) [%thread] %cyan(%logger{10}) [%X{id}] %msg%n"
+
+rotationManagementConfig:
+  persistantFilePath: "/var/log/flipkart/erp/fk-crm-svc-backend/rotation_status.txt"
+#httpClientConfigXMLName: "HttpClientConfig.local.xml"
+#
+#rpServices:
+#  elastic:
+#    host: ims-rnarchive-compute.nm.flipkart.com
+#    port: 9200
+#    protocol: http
+#  monitor:
+#    host: localhost
+#    port: 6300
+#    protocol: http
+#  ps:
+#    host: 10.85.51.40
+#    port: 80
+#    protocol: http
+#  audit:
+#    host: abt-agent-mgr-0002.nm.flipkart.com
+#    port: 5600
+#    protocol: http
+#  agi:
+#    host: 10.85.50.230
+#    port: 80
+#    protocol: http
+#  hedwig:
+#    host: crm-hedwig-client.nm.flipkart.com
+#    port: 80
+#    protocol: http
+#  hedwigReport:
+#    host: hedwig-client-read.vip.nm.flipkart.com
+#    port: 80
+#    protocol: http
+#  archivalService:
+#    host: ims-matrix-actions-04.nm.flipkart.com
+#    port: 5500
+#    protocol: http
+#
+#
+#jerseyClientConfiguration:
+#  maxThreads: 10
+#  workQueueSize: 10
+#
+#jerseyClientConnectTimeout: 2000
+#jerseyClientReadTimeout: 60000
+#
+#techMasterProfile: akhilesh.chaudhary,anmol.kapoor,pankaj.bhatia,nitin.s,jitendra.gangwar,abhay.chaturvedi
+#
+#separator: ","
+#
+#inHousePartners: OMTP_BLR,FLIPKART
+##redisConfiguration:
+##  clusterName: ims-matrix-redis01.nm.flipkart.com
+##  password: matrix
+##  clustered: false
+##  server: ops-redis-sentinel-dc4-1.nm.flipkart.com:26379,ops-redis-sentinel-dc4-2.nm.flipkart.com:26379,ops-redis-sentinel-dc4-3.nm.flipkart.com:26379
+#
+#redisConfiguration:
+#  clusterName: ims
+#  password: foobared
+#  clustered: true
+#  sentinelServer: 10.85.118.173:26379,10.85.110.11:26379,10.85.129.29:26379
+#tabDataReport: svc_report_8_order_groups_1
+#bulkDownloadReport: svc_report_8_order_groups_bulk_1
+#
+#
+#alertRmqConfiguration:
+#  executorThreads: 10
+#  queue: alerts_monitor_svc_local_queue1
+#  exchange: alerts_monitor_svc_local
+#  routingKey: alerts_monitor_svc_local_key1
+#  hosts: crm-fliplisten-app-1.stage.ch.flipkart.com
+#
+#d42:
+#  accessKey: "M3DH1PCVW26NF6ATPN9P"
+#  secretKey: "tU+/LBsNaG+50Qy8JUxh6w+ysMhDvhQb9qyCAmnI"
+#  bucketName: "ims-test-bucket"
+#  d42EndPoint: "http://10.47.2.3"
+#
+#urlForDownload: "http://10.85.50.246/report/d42/"
+#
+#
+#alertUiLinkUrl: "http://sentinel.ims.nm.flipkart.com/console/#/overview/outage/{0}?source=alert_email"
+#freshDeskConfiguration:
+# url: https://flipkart.freshdesk.com/api/v2
+# allowedEmailIds: "anmol.kapoor@flipkart.com,akhilesh.chaudhary@flipkart.com,pankaj.bhatia@flipkart.com,abhay.chaturvedi@flipkart.com"
+# userNameAndPassword:
+#  cx-tech-support-02@flipkart.com: cxtechsupport$2
+#
+#
+#

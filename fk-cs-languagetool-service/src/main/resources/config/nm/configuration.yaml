@@ -1,0 +1,165 @@
+
+database:
+  driverClass: com.mysql.jdbc.Driver
+  user: svc_backend_rw
+  password: mjhbyg
+
+  # the JDBC URL
+  url: jdbc:mysql://10.85.108.5:3306/svc_backend_2
+
+  # svc_backend_rw mjhbyg
+  # svc_backend_ro zzpvtf
+  # the maximum amount of time to wait on an e  mpty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+  properties:
+      charSet: UTF-8
+      hibernate.show_sql: true
+      hibernate.hbm2ddl.auto: validate
+      hibernate.session.events.log: false
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+  maxConnectionAge : 10s
+  checkConnectionOnBorrow: true
+
+server:
+  applicationConnectors:
+  - type: http
+    port: 6200
+    idleTimeout: 30 seconds
+    acceptorThreads: 10
+    selectorThreads: 20
+    useServerHeader: true
+    useDateHeader: true
+  adminConnectors:
+  - type: http
+    port: 6201
+    idleTimeout: 30 seconds
+    acceptorThreads: 1
+    selectorThreads: 2
+    useServerHeader: true
+    useDateHeader: true
+
+  requestLog:
+    timeZone: IST
+    enabled: true
+    appenders:
+      - type: file
+        currentLogFilename: /var/log/flipkart/erp/fk-crm-svc-backend/requests.log
+        archivedLogFilenamePattern: /var/log/flipkart/erp/fk-crm-svc-backend/requests-%d{yyyy-MM-dd}.log
+        timeZone: IST
+
+logging:
+  level: INFO
+  appenders:
+    - type: file-size-rolled
+      currentLogFilename: /var/log/flipkart/erp/fk-crm-svc-backend/svc.log
+      archive: true
+      archivedLogFilenamePattern: /var/log/flipkart/erp/fk-crm-svc-backend/svc-%i.log.gz
+      archivedFileCount: 10
+      maxFileSize: 500MB
+      timeZone: IST
+      logFormat: "%date %level [%thread] %logger{10} [%X{id}] %msg%n\n"
+
+
+
+rotationManagementConfig:
+  persistantFilePath: "/var/log/flipkart/erp/fk-crm-svc-backend/rotation_status.txt"
+httpClientConfigXMLName: "HttpClientConfig.nm.xml"
+
+rpServices:
+  imsRead:
+    host: 10.85.50.234
+    port: 80
+    protocol: http
+  ims:
+    host: 10.85.50.220
+    port: 80
+    protocol: http
+  elastic:
+    host: 10.85.118.180
+    port: 9200
+    protocol: http
+  monitor:
+    host: monitor.ims.nm.flipkart.com
+    port: 80
+    protocol: http
+  ps:
+    host: 10.85.51.1
+    port: 80
+    protocol: http
+  audit:
+    host: 10.85.51.217
+    port: 80
+    protocol: http
+  agi:
+    host: 10.85.50.230
+    port: 80
+    protocol: http
+  hedwig:
+    host: crm-hedwig-client.nm.flipkart.com
+    port: 80
+    protocol: http
+  hedwigReport:
+    host: hedwig-client-read.vip.nm.flipkart.com
+    port: 80
+    protocol: http
+  archivalService:
+    host: ims-matrix-actions-04.nm.flipkart.com
+    port: 5500
+    protocol: http
+
+jerseyClientConfiguration:
+  maxThreads: 100
+  workQueueSize: 10
+
+jerseyClientConnectTimeout: 2000
+jerseyClientReadTimeout: 120000
+
+inHousePartners: OMTP_BLR,FLIPKART
+techMasterProfile: akhilesh.chaudhary,anmol.kapoor,pankaj.bhatia,nitin.s,jitendra.gangwar,abhay.chaturvedi
+separator: ","
+
+
+
+redisConfiguration:
+  clusterName: ims
+  password: foobared
+  clustered: true
+  sentinelServer: 10.85.118.173:26379,10.85.110.11:26379,10.85.129.29:26379
+
+tabDataReport: svc_report_8_order_groups_1
+bulkDownloadReport: svc_report_8_order_groups_bulk_1
+
+alertRmqConfiguration:
+  executorThreads: 20
+  queue: alerts_monitor_svc_prod_queue
+  exchange: alerts_monitor_svc_prod
+  routingKey: alerts_monitor_svc_prod_key
+  hosts: "10.85.119.36,10.85.125.111"
+
+d42:
+  accessKey: "6ND4VCSQGBWCO3F42XUT"
+  secretKey: "jqGTXrSrgiUFypf4T3/1of191Yj8Rfrm5H0Nr0ht"
+  bucketName: "fk-crm-ims-report"
+  d42EndPoint: "http://10.47.2.33"
+
+urlForDownload: "http://10.85.50.246/report/d42/"
+
+
+alertUiLinkUrl: "http://sentinel.ims.nm.flipkart.com/console/#/overview/outage/{0}?source=alert_email"
+freshDeskConfiguration:
+ url: http://10.85.52.200/api/v2
+ allowedEmailIds: "anmol.kapoor@flipkart.com,akhilesh.chaudhary@flipkart.com,pankaj.bhatia@flipkart.com,abhay.chaturvedi@flipkart.com"
+ userNameAndPassword:
+  cx-tech-support-02@flipkart.com: cxtechsupport$2
+  cx-tech-support-03@flipkart.com: cxtechsupport$3

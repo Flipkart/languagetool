@@ -23,6 +23,10 @@ database:
       hibernate.show_sql: true
       hibernate.hbm2ddl.auto: update
       hibernate.session.events.log: false
+      jadira.usertype.autoRegisterUserTypes: true
+      jadira.usertype.databaseZone: jvm
+      jadira.usertype.javaZone: jvm
+
 
   #  whether or not idle connections should be validated
   checkConnectionWhileIdle: false

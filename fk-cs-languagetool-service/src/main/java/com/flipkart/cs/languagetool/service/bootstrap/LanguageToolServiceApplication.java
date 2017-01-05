@@ -24,8 +24,12 @@ import io.dropwizard.hibernate.ScanningHibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
 import java.text.SimpleDateFormat;
+import java.util.EnumSet;
 import java.util.TimeZone;
 
 /**
@@ -56,6 +60,13 @@ public class LanguageToolServiceApplication extends Application<LanguageToolServ
         environment.jersey().register(injector.getInstance(CustomJsonMappingExceptionMapper.class));
         environment.jersey().register(injector.getInstance(GenericExceptionMapper.class));
         environment.jersey().register(injector.getInstance(NotFoundExceptionMapper.class));
+
+        final FilterRegistration.Dynamic cors = environment.servlets().addFilter("crossOriginRequests",
+                CrossOriginFilter.class);
+        cors.setInitParameter("allowedOrigins", "*"); // allowed origins comma separated
+        cors.setInitParameter("allowedHeaders", "*");
+        cors.setInitParameter("allowedMethods", "GET,PUT,POST,DELETE,OPTIONS,HEAD");
+        cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
     }
 
     private Injector createInjector(LanguageToolServiceConfig languageToolServiceConfig,

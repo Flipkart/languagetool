@@ -432,7 +432,7 @@ public final class Main {
         } else if (event.getType() == LanguageToolEvent.Type.LANGUAGE_CHANGED) {
           languageBox.selectLanguage(ltSupport.getLanguage());
         } else if (event.getType() == LanguageToolEvent.Type.RULE_ENABLED) {
-          //this will trigger a check and the result will be updated by
+          //this will trigger a check and the result will be saveRequired by
           //the CHECKING_FINISHED event
         } else if (event.getType() == LanguageToolEvent.Type.RULE_DISABLED) {
           String msg = org.languagetool.tools.Tools.i18n(messages, "checkDoneNoTime", event.getSource().getMatches().size());

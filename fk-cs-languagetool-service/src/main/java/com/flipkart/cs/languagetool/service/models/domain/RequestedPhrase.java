@@ -1,5 +1,6 @@
 package com.flipkart.cs.languagetool.service.models.domain;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -16,7 +17,9 @@ public class RequestedPhrase {
     @Enumerated(EnumType.STRING)
     private RequestStatus currentStatus;
     private Integer requestCount;
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime createdAt;
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime modifiedAt;
     private String createdByUser;
     private String modifiedByUser;

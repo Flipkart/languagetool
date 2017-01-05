@@ -68,7 +68,7 @@ public class RomanianTaggerTest extends AbstractRomanianTaggerTest {
   @Test
   public void testTaggerUserDict() throws Exception {
     assertHasLemmaAndPos("configurați", "configura", "V0p2000cz0"); // de adăugat formele pentru infinitiv și participiu
-    // to be updated when the words from added.txt are moved to romanian.dict  
+    // to be saveRequired when the words from added.txt are moved to romanian.dict
   }
 
   /**

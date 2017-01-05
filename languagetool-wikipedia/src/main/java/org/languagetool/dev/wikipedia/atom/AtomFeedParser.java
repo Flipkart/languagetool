@@ -53,7 +53,7 @@ class AtomFeedParser {
             case "title":
               title = getCharacterData(eventReader);
               break;
-            case "updated":
+            case "saveRequired":
               String dateString = getCharacterData(eventReader);
               try {
                 // e.g. 2013-12-03T09:48:29Z - got this from http://stackoverflow.com/questions/6038136,

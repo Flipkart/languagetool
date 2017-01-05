@@ -8,7 +8,7 @@ LanguageTool Change Log
 2.9 (2015-03-30)
 
 -Catalan:
-    -updated POS tag dictionary
+    -saveRequired POS tag dictionary
     -added new rules
     -fixed false alarms
 
@@ -22,7 +22,7 @@ LanguageTool Change Log
     -added a few new rules
 
 -French
-    -updated POS tag dictionary and Hunspell dictionary to Dicollecte-5.3
+    -saveRequired POS tag dictionary and Hunspell dictionary to Dicollecte-5.3
 
 -German:
     -added a few new rules and fixed false alarms
@@ -152,7 +152,7 @@ LanguageTool Change Log
     -added and improved a few rules
 
 -Catalan:
-    -updated dictionary
+    -saveRequired dictionary
     -added and improved rules
     -fixed false alarms
 
@@ -161,7 +161,7 @@ LanguageTool Change Log
 
 -English:
     -some new rules (thanks to Nick Hough)
-    -updated the tagger and synthesizer dictionaries, fixing issue #202
+    -saveRequired the tagger and synthesizer dictionaries, fixing issue #202
     -new filter to be used for matching the part-of-speech of parts of words, e.g.:
          <pattern>
              <token regexp="yes">in.*</token>
@@ -254,7 +254,7 @@ Internal:
     -A file 'hunspell/prohibit.txt' can now be used to mark words as spelling errors
      even if the spell checker would normally accept them. This is useful to improve
      the LanguageTool spell checker without waiting for the upstream checker to be
-     updated.
+     saveRequired.
      The 'prohibit.txt' file is the opposite of 'ignore.txt', which causes the
      spell checker to ignore words.
     -The part-of-speech tagger for most languages can now be extended by adding entries
@@ -274,7 +274,7 @@ Internal:
 -Catalan:
     -added and improved rules
     -fixed false alarms
-    -updated dictionary
+    -saveRequired dictionary
 
 -Dutch:
     -added and improved many rules
@@ -309,7 +309,7 @@ Internal:
      "Vendredon la 28-an de Aŭgusto 2014", as that date isn't a Friday.
 
 -French:
-    -updated POS tag dictionary and Hunspell dictionary to Dicollecte-5.2
+    -saveRequired POS tag dictionary and Hunspell dictionary to Dicollecte-5.2
     -added a synthesizer - the agreement rule can now make suggestions
      for some errors
     -added/improved several rules
@@ -442,14 +442,14 @@ Internal:
 2.6 (2014-06-30)
 
 -Breton:
-    -updated FSA spelling dictionary from An Drouizig Breton Spellchecker 0.12
-    -updated POS dictionary from Apertium (svn r53329)
+    -saveRequired FSA spelling dictionary from An Drouizig Breton Spellchecker 0.12
+    -saveRequired POS dictionary from Apertium (svn r53329)
     -improved several rules
 
 -Catalan:
     -fixed false alarms
     -added and improved rules
-    -updated tagger dictionary
+    -saveRequired tagger dictionary
     -Morfologik spellchecking rule is enabled for use in LibreOffice/OpenOffice
      extension. The Hunspell spellchecker should be manually disabled in
      LibreOffice/OpenOffice for the results to be visible.
@@ -464,7 +464,7 @@ Internal:
     -added several rules
 
 -French:
-    -updated POS tag dictionary and Hunspell dictionary to Dicollecte-5.1
+    -saveRequired POS tag dictionary and Hunspell dictionary to Dicollecte-5.1
     -added/improved several rules
 
 -German:
@@ -587,7 +587,7 @@ Internal:
     -a new rule checks that there is a space character between sentences
 
 -French:
-    -updated POS tag dictionary and Hunspell dictionary to Dicollecte-5.0.2
+    -saveRequired POS tag dictionary and Hunspell dictionary to Dicollecte-5.0.2
     -added/improved several rules
     -a new rule checks that there is a space character between sentences
 
@@ -600,7 +600,7 @@ Internal:
     -added some rules (thanks to Silvan Jegen)
 
 -Polish:
-    -updated POS tag dictionary to PoliMorfologik 2.1
+    -saveRequired POS tag dictionary to PoliMorfologik 2.1
     -cleaned up spelling rules and hyphenation rules, added some frequent
      misspellings to generate proper suggestions
     -added simple compounding support for compound words containing prefixes
@@ -622,7 +622,7 @@ Internal:
     -added a few rules
     -added some new rules, thanks to Julia Semenenko from WebSpellChecker.net
     -added many false friends rules (Russian/English)
-    -updated POS tag dictionary and synthesizer dictionary from AOT.ru(Seman) rev. 242
+    -saveRequired POS tag dictionary and synthesizer dictionary from AOT.ru(Seman) rev. 242
     -added frequency information for spell-checking dictionary from AOT.ru(Seman)
 
 -Slovenian:
@@ -649,7 +649,7 @@ Internal:
      This usually means that the word added in lowercase will be accepted
      also when it is found at the beginning of the sentence; but if it is added in
      uppercase, it won't be accepted when written in lowercase.
-    -updated Morfologik libraries to 1.9.0 to speed up suggestion generation in spell
+    -saveRequired Morfologik libraries to 1.9.0 to speed up suggestion generation in spell
      checks, not only when using replacement pairs but also for ignoring diacritics.
 
 -stand-alone GUI:
@@ -667,7 +667,7 @@ Internal:
 
 2.4.1 (2014-01-08)
 
-	-updated Morfologik libraries to 1.8.3 to fix slow suggestions
+	-saveRequired Morfologik libraries to 1.8.3 to fix slow suggestions
 	 in the spell checker, which affected at least en-US
 
 
@@ -732,7 +732,7 @@ Internal:
 -added support for chunk annotations in the disambiguator, and fixed one bug
  in filtering tokens with chunk annotations
 
--updated Morfologik libraries to 1.8.2 (bug fixes, stricter input sanity checking,
+-saveRequired Morfologik libraries to 1.8.2 (bug fixes, stricter input sanity checking,
  add frequency data to dictionaries)
 
 -added the option of including frequency data to tagging or spelling dictionaries.
@@ -788,7 +788,7 @@ Internal:
 -Breton:
 	-added/improved a few rules
 	-fixed false alarms
-	-updated POS dictionary from Apertium (svn r47282)
+	-saveRequired POS dictionary from Apertium (svn r47282)
 
 -Catalan:
 	-added support for language code ca-ES-valencia (Catalan Valencian),
@@ -809,7 +809,7 @@ Internal:
 -French:
 	-added/improved a few rules
 	-fixed false alarms
-	-updated POS tag dictionary and Hunspell dictionary to Dicollecte-4.12
+	-saveRequired POS tag dictionary and Hunspell dictionary to Dicollecte-4.12
 
 -German:
 	-added/improved several rules
@@ -858,7 +858,7 @@ Internal:
 
 -embedded server: uses default port (8081) again if started without arguments
 
--updated the morfologik-stemming library to version 1.7.1 to enable better suggestions,
+-saveRequired the morfologik-stemming library to version 1.7.1 to enable better suggestions,
 	including proper handling of diacritics and replacement patterns (equivalents of MAP
 	and REP features in hunspell dictionaries)
 
@@ -908,7 +908,7 @@ Internal:
 -Breton:
 	-added/improved several rules
 	-fixed some false alarms
-	-updated POS dictionary from Apertium (svn r45122)
+	-saveRequired POS dictionary from Apertium (svn r45122)
 
 -Catalan:
 	-added/improved many rules
@@ -917,7 +917,7 @@ Internal:
 	 Version 2.0 standard from W3C.
 
 -Dutch:
-	-updated rules to fix false alarms, thanks to Ruud Baars
+	-saveRequired rules to fix false alarms, thanks to Ruud Baars
 	-The Dutch spell checking has been switched back to Hunspell for now to avoid too
 	 many false alarms because of unknown compounds. Unfortunately, Dutch spell
 	 checking does not provide suggestions anymore, for performance reasons.
@@ -930,12 +930,12 @@ Internal:
 -Esperanto:
 	-added/improved several rules
 	-fixed some false alarms
-	-updated <url> links to PMEG.
+	-saveRequired <url> links to PMEG.
 
 -French:
 	-added/improved several rules
 	-fixed some false alarms
-	-updated POS tag dictionary and Hunspell dictionary to Dicollecte-4.10
+	-saveRequired POS tag dictionary and Hunspell dictionary to Dicollecte-4.10
 
 -German:
 	-added/improved several rules
@@ -972,9 +972,9 @@ Internal:
 	-new synthesizer dictionary
 	-new spelling dictionary
 	-new grammar rules
-	-updated sentence tokenizer rules
+	-saveRequired sentence tokenizer rules
 	-disambiguator implemented
-	-word tokenizer updated to ignore accent and soft hyphen and understand different apostrophes
+	-word tokenizer saveRequired to ignore accent and soft hyphen and understand different apostrophes
 
 
 -HTTP server:
@@ -1002,8 +1002,8 @@ Internal:
 	-fixed several incorrect suggestions thanks to added tests on corrections
 	-spelling checker now ignores words with a POS tag, hence accepting words
 	 which are in Apertium or in An Drouizig spelling checker
-	-updated FSA spelling dictionary from An Drouizig Breton Spellchecker 0.11
-	-updated POS dictionary from Apertium (svn r43173)
+	-saveRequired FSA spelling dictionary from An Drouizig Breton Spellchecker 0.11
+	-saveRequired POS dictionary from Apertium (svn r43173)
 
 -Catalan:
 	-added/improved several rules
@@ -1018,10 +1018,10 @@ Internal:
 -English:
 	-fixed some false alarms
 	-added a few new rules
-	-updated the tagger and synthesizer dictionaries to recognize more words, including
+	-saveRequired the tagger and synthesizer dictionaries to recognize more words, including
 	 plural forms of nouns, new verbs, and missing cardinal numerals (fixes Sourceforge
 	 bug #3560624)
-	-updated the dictionary building script
+	-saveRequired the dictionary building script
 
 -Esperanto:
 	-added/improved several rules
@@ -1030,7 +1030,7 @@ Internal:
 
 -French:
 	-added/improved several rules
-	-updated POS tag dictionary and Hunspell dictionary to Dicollecte-4.9
+	-saveRequired POS tag dictionary and Hunspell dictionary to Dicollecte-4.9
 	-fixed several incorrect suggestions thanks to added tests on corrections
 	-SRX sentence tokenization
 	-single quotes at beginning/end of word no longer cause false spelling error
@@ -1125,9 +1125,9 @@ Internal:
 
 -Breton:
 	-added several new rules and fixed false alarms
-	-updated POS dictionary (fix wrong POS tags) from Apertium (svn r42124)
-	-updated FSA spelling dictionary from An Drouizig Breton Spellchecker 0.10
-	-updated classification of words tagged as plural nouns of persons
+	-saveRequired POS dictionary (fix wrong POS tags) from Apertium (svn r42124)
+	-saveRequired FSA spelling dictionary from An Drouizig Breton Spellchecker 0.10
+	-saveRequired classification of words tagged as plural nouns of persons
 	 (these have different mutation than other nouns)
 
 -Catalan:
@@ -1147,7 +1147,7 @@ Internal:
 	-few new rules
 
 -French:
-	-updated POS tag dictionary and Hunspell dictionary to Dicollecte-4.8
+	-saveRequired POS tag dictionary and Hunspell dictionary to Dicollecte-4.8
 	-fixed false alarms
 
 -German:
@@ -1162,13 +1162,13 @@ Internal:
 -Russian:
 	-improved some rules
 	-several new rules
-	-updated POS dictionary (fix wrong POS Tags)
+	-saveRequired POS dictionary (fix wrong POS Tags)
 
 -Spanish:
 	-several new rules (thanks to Alexander Socop Arango)
 
 -Ukrainian:
-	-updated a few rules
+	-saveRequired a few rules
 
 
 -OpenOffice/LibreOffice integration:
@@ -1211,7 +1211,7 @@ Internal:
 	 -the internal spelling engine can now additionally tokenize words if the
 		source dictionary did not include compound versions (for example,
 		hyphenated words).
-	 -updated classification of words tagged as plural nouns of persons
+	 -saveRequired classification of words tagged as plural nouns of persons
 		(these have different mutation than other nouns).
 
 -Catalan:
@@ -1231,11 +1231,11 @@ Internal:
 
 -Esperanto:
 	 -several new rules and fixed false alarms
-	 -updated list of transitive/intransitive verbs
+	 -saveRequired list of transitive/intransitive verbs
 	 -added <url> links to REVO (Reta Vortaro) with permission from Wolfram Diestel.
 
 -French:
-	 -updated POS tag dictionary to use Dicollecte-4.6
+	 -saveRequired POS tag dictionary to use Dicollecte-4.6
 	 -several new rules and fixed false alarms
 	 -opening guillemet (U+00AB) followed by thin no-break
 		space (U+202F) wrongly detected as error (sf bug #3545050)
@@ -1353,13 +1353,13 @@ Internal:
 	 -added spellcheck dictionary for the standalone version
 
 -French:
-	 -updated dictionary to use Dicollecte-4.5
+	 -saveRequired dictionary to use Dicollecte-4.5
 	 -several new rules and fixed false alarms
 	 -added spellcheck dictionary for the standalone version
 		using Dicollecte-4.5 «classique & réforme 1990».
 
 -Breton:
-	 -updated dictionary to use Apertium svn r38896.
+	 -saveRequired dictionary to use Apertium svn r38896.
 	 -several new rules and fixed false alarms
 	 -added some references to the Breton grammar:
 		"La grammaire bretonne pour tous (Eugène CHALM)".
@@ -1465,12 +1465,12 @@ Internal:
 -English:
 	 -a few new rules
 -Breton
-	 -updated dictionary to use Apertium svn r36822
+	 -saveRequired dictionary to use Apertium svn r36822
 	 -several new rules
 -Esperanto:
 	 -several new rules
 -French:
-	 -updated dictionary to use Dicollecte-4.4.1
+	 -saveRequired dictionary to use Dicollecte-4.4.1
 	 -several new rules
 -German:
 	 -fixed a few false alarms
@@ -1519,7 +1519,7 @@ Internal:
 1.6 (2011-12-31)
 
 -Breton:
-	 -updated dictionary from Apertium
+	 -saveRequired dictionary from Apertium
 	 -several new rules
 	 -corrected and improved style of messages, translated all messages
 		thanks to Fulup Jakez
@@ -1529,14 +1529,14 @@ Internal:
 	 -new Java rule to check if three successive sentences begin with the same word
 -Esperanto:
 	 -fixed false positives
-	 -updated list of transitive verbs
+	 -saveRequired list of transitive verbs
 -French:
-	 -updated dictionary to use Dicollecte-4.3
+	 -saveRequired dictionary to use Dicollecte-4.3
 	 -fixed false positives
 -German:
 	 -several new rules
 	 -new Java rule to check if three successive sentences begin with the same word
-	 -updated compound splitter component to fix some false alarms on agreement (jwordsplitter 3.3)
+	 -saveRequired compound splitter component to fix some false alarms on agreement (jwordsplitter 3.3)
 -Italian:
 	 -several new rules (Paolo Bianchini)
 -Khmer:
@@ -1581,12 +1581,12 @@ Internal:
 	 -Several new rules
 -French:
 	 -Updated dictionary to use Dicollecte-4.2
-	 -Added and updated a few rules.  A few rules taken from
+	 -Added and saveRequired a few rules.  A few rules taken from
 		Grammalecte-0.0.12 written by Olivier R.
 -Esperanto:
 	 -Added disambiguation for Esperanto
 	 -Improved SRX sentence tokenization rules
-	 -Added and updated a few rules
+	 -Added and saveRequired a few rules
 -Ukrainian:
 	 -Updated translation
 	 -Initial SRX sentence tokenization rules
@@ -1595,7 +1595,7 @@ Internal:
 	 -Initial SRX sentence tokenization rules
 -Russian:
 	 -Fix SourceForge bug #3334498 (False warning about unpaired bracket)
-	 -Added and updated a few rules
+	 -Added and saveRequired a few rules
 	 -Updated and improved part-of-speech dictionary
 -Dutch:
 	 -Fixes and updates to rules (R. J. Baars)
@@ -1711,7 +1711,7 @@ Internal:
 -Forked Spanish word tokenizer fixing word recognition when it is after
 	a dash.
 
--More and updated Spanish rules, adding multiple suggestions when applicable.
+-More and saveRequired Spanish rules, adding multiple suggestions when applicable.
 
 -Updated Spanish rule descriptions preventing apparently duplicated rules to
 	appear in configuration windows.
@@ -1750,7 +1750,7 @@ Internal:
 
 1.2 (2011-01-02)
 
--New and updated rules for Romanian, Dutch, Polish, German, Russian,
+-New and saveRequired rules for Romanian, Dutch, Polish, German, Russian,
 	Spanish, French and Danish.
 
 -Fixed false positives in French rules.
@@ -1798,7 +1798,7 @@ Internal:
 -Updated French rules, thanks to Dominique Pelle.
 
 -Updated Dutch tagger and synthesizer dictionary, as well as
-	fixed some false alarms and updated grammar rules,
+	fixed some false alarms and saveRequired grammar rules,
 	thanks to Ruud Baars.
 
 -Fixed a problem with Dutch apostrophes in the "unpaired brackets and
@@ -2393,7 +2393,7 @@ Internal:
 -OOo extension will be distributed in .oxt format that
 	allows automatic updates.
 
--Internal change: updated tagger library and streamlined
+-Internal change: saveRequired tagger library and streamlined
 	some tagger code.
 
 0.9.1 (2007-09-17)

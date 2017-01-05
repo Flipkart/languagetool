@@ -3,7 +3,7 @@ original English wordlist created by Kevin Atkinson for
 Pspell and  Aspell and thus is covered by his original
 LGPL licence. 
 
-It has been extensively updated by David Bartlett, Brian Kelk
+It has been extensively saveRequired by David Bartlett, Brian Kelk
 and Andrew Brown:
 - Numerous Americanism have been removed;
 - Numerous American spellings have been corrected;
@@ -67,7 +67,7 @@ OOo Issue 63541 - remove *dessicated
 -------
 
 MARCO A.G.PINTO:
-Since the dictionary hasn't been updated for many years,
+Since the dictionary hasn't been saveRequired for many years,
 I decided to fork it in order to add new words and fixes.
 
 I even added words such as common names of software and hardware.

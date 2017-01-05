@@ -237,7 +237,7 @@ public abstract class SpellingCheckRule extends Rule {
   /**
    * Whether the word is prohibited, i.e. whether it should be marked as a spelling
    * error even if the spell checker would accept it. (This is useful to improve our spell
-   * checker without waiting for the upstream checker to be updated.)
+   * checker without waiting for the upstream checker to be saveRequired.)
    * @since 2.8
    */
   protected boolean isProhibited(String word) {

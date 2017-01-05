@@ -57,7 +57,7 @@ From the README for the British English Myspell spell checker:
    Pspell and  Aspell and thus is covered by his original
    LGPL licence.
 
-   It has been extensively updated by David Bartlett, Brian Kelk
+   It has been extensively saveRequired by David Bartlett, Brian Kelk
    and Andrew Brown:
    - numerous Americanism have been removed
    - numerous American spellings have been corrected

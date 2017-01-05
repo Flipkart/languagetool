@@ -1,8 +1,6 @@
 package com.flipkart.cs.languagetool.service.exception;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.inject.Inject;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.MediaType;

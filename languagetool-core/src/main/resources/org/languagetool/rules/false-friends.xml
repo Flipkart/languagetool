@@ -421,13 +421,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <pattern lang="de">
                 <token>aktualisiert</token>
             </pattern>
-            <translation lang="en">updated</translation>
+            <translation lang="en">saveRequired</translation>
         </rule>
         <rule>
             <pattern lang="pl">
                 <token inflected="yes" postag="ppas.*" postag_regexp="yes">zaktualizować</token>
             </pattern>
-            <translation lang="en">updated</translation>
+            <translation lang="en">saveRequired</translation>
         </rule>
     </rulegroup>
     <rulegroup id="ACTUALIZE">

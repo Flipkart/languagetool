@@ -1,11 +1,12 @@
-package org.languagetool.rules.en;
+package com.flipkart.cs.languagetool.language.rules;
 
-import com.google.common.collect.Sets;
 import org.languagetool.AnalyzedSentence;
 import org.languagetool.AnalyzedToken;
 import org.languagetool.AnalyzedTokenReadings;
 import org.languagetool.rules.Rule;
 import org.languagetool.rules.RuleMatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -15,6 +16,9 @@ import java.util.*;
  */
 public class BlacklistedWordRule extends Rule {
 
+    private final Logger log = LoggerFactory.getLogger(BlacklistedWordRule.class);
+
+    private final Set<String> blacklistedWords;
 
     @Override
     public String getId() {
@@ -26,8 +30,9 @@ public class BlacklistedWordRule extends Rule {
         return "Blacklists the use of words in flipkart communications.";  // shown in the configuration dialog
     }
 
-    public BlacklistedWordRule(ResourceBundle messages) {
+    public BlacklistedWordRule(ResourceBundle messages, Set<String> blacklistedWords) {
         super(messages);
+        this.blacklistedWords = blacklistedWords;
     }
 
     // This is the method with the error detection logic that you need to implement:
@@ -41,8 +46,6 @@ public class BlacklistedWordRule extends Rule {
 
         /// marking it as wrong.
 
-
-
         // Let's get all the tokens (i.e. words) of this sentence, but not the spaces:
         AnalyzedTokenReadings[] tokens = sentence.getTokensWithoutWhitespace();
 
@@ -50,20 +53,21 @@ public class BlacklistedWordRule extends Rule {
         // be a special token that indicates the start of a sentence:
         for (AnalyzedTokenReadings token : tokens) {
 
-            System.out.println("Token: " + token.getToken());  // the original word from the input text
+            log.info("Token: " + token.getToken());  // the original word from the input text
 
             // A word can have more than one reading, e.g. 'dance' can be a verb or a noun,
             // so we iterate over the readings:
             Set<String> lemmas = new HashSet<>();
             for (AnalyzedToken analyzedToken : token.getReadings()) {
                 String lemma = analyzedToken.getLemma();
-                System.out.println("  Lemma: " + lemma);
-                if(lemma != null)
-                {lemmas.add(lemma);}
+                log.info("  Lemma: " + lemma);
+                if (lemma != null) {
+                    lemmas.add(lemma);
+                }
             }
 
             for (String lemma : lemmas) {
-                if (isBlacklisted(lemma)) {
+                if (blacklistedWords.contains(lemma)) {
                     RuleMatch ruleMatch = new RuleMatch(this, token.getStartPos(), token.getEndPos(), "Use of " + lemma + " word is not approved. Please change.");
                     ruleMatches.add(ruleMatch);
 
@@ -75,11 +79,16 @@ public class BlacklistedWordRule extends Rule {
         return toRuleMatchArray(ruleMatches);
     }
 
-    private boolean isBlacklisted(String lemma) {
-        Set<String> blacklistedWords = Sets.newHashSet("bro", "pro", "fool");
-        return (blacklistedWords.contains(lemma));
-
-    }
+//    private boolean isBlacklisted(String lemma) throws IOException {
+//        Set<String> blacklistedWords = null;
+//        try {
+//            blacklistedWords = languageToolService.getBlacklistedWords();
+//        } catch (ApiException e) {
+//            throw new IOException(e.getMessage());
+//        }
+//        return (blacklistedWords.contains(lemma));
+//
+//    }
 
     @Override
     public void reset() {

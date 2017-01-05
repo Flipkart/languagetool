@@ -950,7 +950,7 @@
     <example type="untouched">з 2003 року.</example>
   </rule>
 
-  <!-- TOOD: redo when dictionary updated
+  <!-- TOOD: redo when dictionary saveRequired
   <rule name="Числівник, як іменник годин 1" id="NUMR_AS_HOUR_NOUN1">
     <pattern>
       <marker>

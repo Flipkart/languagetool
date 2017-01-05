@@ -2,7 +2,6 @@ package com.flipkart.cs.languagetool.service.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flipkart.abt.rotationBundle.tasks.RotationManagementTask;
-import com.flipkart.cs.languagetool.service.models.dtos.RequestHeaders;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -39,7 +38,7 @@ public class ResponseFilter implements ContainerResponseFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
-        RequestHeaders.clear();
+//        RequestHeaders.clear();
 
         logger.info("in response filter");
         Optional<Object> responseEntity = Optional.fromNullable(responseContext.getEntity());

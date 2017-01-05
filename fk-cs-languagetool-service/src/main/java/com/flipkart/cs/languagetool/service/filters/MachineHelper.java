@@ -13,7 +13,7 @@ public class MachineHelper {
 
         if (machineName == null) {
             try {
-                String hostName = InetAddress.getLocalHost().getHostName();
+                machineName = InetAddress.getLocalHost().getHostName();
                 if (machineName.contains("local")) machineName = "local";
                 else
                 {

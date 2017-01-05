@@ -12,14 +12,18 @@ public class PhraseActionResponse {
     RequestStatus requestStatus;
     Integer currentRequestCount;
     String message;
+    boolean saveRequired = false;
+    boolean cacheReloadRequired = false;
 
     public PhraseActionResponse() {
     }
 
-    public PhraseActionResponse(String phrase, RequestStatus requestStatus, Integer currentRequestCount, String message) {
+    public PhraseActionResponse(String phrase, RequestStatus requestStatus, Integer currentRequestCount, String message, boolean isSaveRequired , boolean isCacheReloadRequired) {
         this.phrase = phrase;
         this.requestStatus = requestStatus;
         this.currentRequestCount = currentRequestCount;
         this.message = message;
+        this.saveRequired = isSaveRequired;
+        this.cacheReloadRequired = isCacheReloadRequired;
     }
 }

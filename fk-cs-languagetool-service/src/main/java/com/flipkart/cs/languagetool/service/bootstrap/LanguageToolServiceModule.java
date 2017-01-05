@@ -2,6 +2,9 @@ package com.flipkart.cs.languagetool.service.bootstrap;
 
 import com.flipkart.abt.rotationBundle.tasks.RotationManagementTask;
 import com.flipkart.cs.languagetool.language.FlipkartLanguage;
+import com.flipkart.cs.languagetool.service.LanguageToolService;
+import com.flipkart.cs.languagetool.service.exception.ApiException;
+import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -9,6 +12,10 @@ import io.dropwizard.hibernate.HibernateBundle;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.languagetool.JLanguageTool;
+import org.languagetool.rules.Rule;
+import org.languagetool.rules.spelling.SpellingCheckRule;
+
+import java.util.Set;
 
 /**
  * Created by anmol.kapoor on 02/01/17.
@@ -43,14 +50,25 @@ public class LanguageToolServiceModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public FlipkartLanguage providerFlipkartLanguage() {
+    public FlipkartLanguage providerFlipkartLanguage(LanguageToolService languageToolService) {
         log.info("Creating new Flipkart Language");
-        return new FlipkartLanguage();
+        return new FlipkartLanguage(languageToolService);
     }
 
     @Provides
-    public JLanguageTool providerJLanguageTool(FlipkartLanguage flipkartLanguage) {
+    public JLanguageTool providerJLanguageTool(FlipkartLanguage flipkartLanguage, LanguageToolService languageToolService) throws ApiException {
         log.info("Creating new JLanguageTool");
-        return new JLanguageTool(flipkartLanguage);
+        Set<String> approvedWords = languageToolService.getApprovedWords();
+        /// adding the ignored words of a dictionary
+        // asking language service to give the list
+        JLanguageTool jLanguageTool = new JLanguageTool(flipkartLanguage);
+        for (Rule rule : jLanguageTool.getAllActiveRules()) {
+            if (rule instanceof SpellingCheckRule) {
+                ((SpellingCheckRule) rule).acceptPhrases(Lists.newArrayList(approvedWords));
+                log.info("Added approved words : " + approvedWords);
+            }
+        }
+        return jLanguageTool;
+
     }
 }

@@ -1,5 +1,6 @@
 package com.flipkart.cs.languagetool.service.models.domain;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -14,9 +15,13 @@ public class RegisteredDictionary {
     @Id
     private String shortCode;
     private String name;
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime createdAt;
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime updatedAt;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime currentVersionCreatedAt;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "dictionary_to_phrase", joinColumns = {
             @JoinColumn(name = "languageId", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "requestedPhraseId",
@@ -46,6 +51,9 @@ public class RegisteredDictionary {
         return requestedPhraseList;
     }
 
+    public DateTime getCurrentVersionCreatedAt() {
+        return currentVersionCreatedAt;
+    }
 
     // SETTERS
 
@@ -68,5 +76,25 @@ public class RegisteredDictionary {
 
     public void setRequestedPhraseList(List<RequestedPhrase> requestedPhraseList) {
         this.requestedPhraseList = requestedPhraseList;
+    }
+
+    public void setCurrentVersionCreatedAt(DateTime currentVersionCreatedAt) {
+        this.currentVersionCreatedAt = currentVersionCreatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RegisteredDictionary that = (RegisteredDictionary) o;
+
+        return shortCode.equals(that.shortCode);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return shortCode.hashCode();
     }
 }

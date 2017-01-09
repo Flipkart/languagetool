@@ -23,7 +23,6 @@ import java.util.UUID;
  * Created by anmol.kapoor on 03/01/17.
  */
 @Provider
-@Priority(Integer.MIN_VALUE)
 public class RequestFilter implements ContainerRequestFilter {
 
     private final Logger logger = LoggerFactory.getLogger(RequestFilter.class);
@@ -37,7 +36,9 @@ public class RequestFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext containerRequestContext) {
         setTransactionId(containerRequestContext);
         MultivaluedMap<String, String> headers = containerRequestContext.getHeaders();
-        populateRequestThreadContext(headers);
+        if(!containerRequestContext.getMethod().toLowerCase().equals("options")) {
+            populateRequestThreadContext(headers);
+        }
         logRequest(containerRequestContext);
     }
 

@@ -12,6 +12,8 @@ public class Paginated<T> {
     List<T> results;
     Long total;
     Long count;
+    OrderByParam orderBy;
+    OrderSeq orderSeq;
 
     public Paginated() {
     }
@@ -21,4 +23,5 @@ public class Paginated<T> {
         this.total = total;
         this.count = count;
     }
+
 }

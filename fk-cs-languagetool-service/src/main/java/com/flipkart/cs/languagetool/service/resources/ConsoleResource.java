@@ -8,10 +8,7 @@ import com.flipkart.cs.languagetool.service.models.dao.RequestedPhraseDao;
 import com.flipkart.cs.languagetool.service.models.domain.RegisteredDictionary;
 import com.flipkart.cs.languagetool.service.models.domain.RequestStatus;
 import com.flipkart.cs.languagetool.service.models.domain.RequestedPhrase;
-import com.flipkart.cs.languagetool.service.models.dtos.OrderByParam;
-import com.flipkart.cs.languagetool.service.models.dtos.Paginated;
-import com.flipkart.cs.languagetool.service.models.dtos.RequestHeaders;
-import com.flipkart.cs.languagetool.service.models.dtos.RequestedPhraseResponse;
+import com.flipkart.cs.languagetool.service.models.dtos.*;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
@@ -79,16 +76,27 @@ public class ConsoleResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Paginated<RequestedPhraseResponse> getRequestedPhrases(@PathParam("status") RequestStatus status, @QueryParam("page_no") Integer pageNo,
                                                                   @QueryParam("page_size") Integer pageSize,
-                                                                  @QueryParam("order_by")String orderByParamAsString) throws ApiException {
+                                                                  @QueryParam("order_by") String orderByParamAsString,
+                                                                  @QueryParam("order_seq") String orderSeqAsString) throws ApiException {
         Optional<OrderByParam> orderByParam = Optional.absent();
-        if(orderByParamAsString != null && orderByParamAsString.trim().isEmpty())
-        {
+        if (orderByParamAsString != null && !orderByParamAsString.trim().isEmpty()) {
             try {
                 orderByParam = Optional.fromNullable(OrderByParam.valueOf(orderByParamAsString));
-            }catch (Exception e)
-            {
-                throw new ApiException(Response.Status.BAD_REQUEST, "Unable to translate order_by Param : "+orderByParamAsString+" . Possible values : "+ Joiner.on(",").join(OrderByParam.values()));
+            } catch (Exception e) {
+                throw new ApiException(Response.Status.BAD_REQUEST, "Unable to translate order_by Param : " + orderByParamAsString + " . Possible values : " + Joiner.on(",").join(OrderByParam.values()));
             }
+        } else {
+            orderByParam = Optional.of(OrderByParam.PHRASE);
+        }
+        Optional<OrderSeq> orderSeqOptional = Optional.absent();
+        if (orderSeqAsString != null && !orderSeqAsString.trim().isEmpty()) {
+            try {
+                orderSeqOptional = Optional.fromNullable(OrderSeq.valueOf(orderSeqAsString));
+            } catch (Exception e) {
+                throw new ApiException(Response.Status.BAD_REQUEST, "Unable to translate order_seq Param : " + orderByParamAsString + " . Possible values : " + Joiner.on(",").join(OrderSeq.values()));
+            }
+        } else {
+            orderSeqOptional = Optional.of(OrderSeq.asc);
         }
         RegisteredDictionary dictionary = validateAndGetDictionary();
         if (pageNo == null) {
@@ -97,13 +105,16 @@ public class ConsoleResource {
         if (pageSize == null) {
             pageSize = 10;
         }
-        Paginated<RequestedPhrase> requestedPhrasePaginated = requestedPhraseDao.getPhrasesForStatus(status, dictionary, pageNo, pageSize,orderByParam);
+        Paginated<RequestedPhrase> requestedPhrasePaginated = requestedPhraseDao.getPhrasesForStatus(status, dictionary, pageNo, pageSize, orderByParam,orderSeqOptional);
         List<RequestedPhraseResponse> requestedPhraseResponses = new ArrayList<>();
         for (RequestedPhrase requestedPhrase : requestedPhrasePaginated.getResults()) {
             requestedPhraseResponses.add(mapperRequestedPhrase.toRequestedPhraseResponse(requestedPhrase, new RequestedPhraseResponse()));
         }
 
-        return new Paginated<>(requestedPhraseResponses, requestedPhrasePaginated.getTotal(), requestedPhrasePaginated.getCount());
+        Paginated<RequestedPhraseResponse> response = new Paginated<>(requestedPhraseResponses, requestedPhrasePaginated.getTotal(), requestedPhrasePaginated.getCount());
+        response.setOrderBy(orderByParam.get());
+        response.setOrderSeq(orderSeqOptional.get());
+        return response;
     }
 
 

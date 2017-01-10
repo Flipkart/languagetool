@@ -4,6 +4,7 @@ import com.flipkart.cs.languagetool.service.models.domain.RegisteredDictionary;
 import com.flipkart.cs.languagetool.service.models.domain.RequestStatus;
 import com.flipkart.cs.languagetool.service.models.domain.RequestedPhrase;
 import com.flipkart.cs.languagetool.service.models.dtos.OrderByParam;
+import com.flipkart.cs.languagetool.service.models.dtos.OrderSeq;
 import com.flipkart.cs.languagetool.service.models.dtos.Paginated;
 import com.flipkart.cs.languagetool.service.models.dtos.RequestHeaders;
 import com.google.common.base.Optional;
@@ -88,14 +89,21 @@ public class RequestedPhraseDao extends AbstractDAO<RequestedPhrase> {
 
 
     public Paginated<RequestedPhrase> getPhrasesForStatus(RequestStatus status, RegisteredDictionary dictionary,
-                                                          Integer pageNo, Integer pageSize, Optional<OrderByParam> orderByParam) {
+                                                          Integer pageNo, Integer pageSize,
+                                                          Optional<OrderByParam> orderByParam,
+                                                          Optional<OrderSeq> orderSeq) {
         Criteria countCriteria = createCriteriaQueryForGetPhrasesForStatus(dictionary, status);
         countCriteria.setProjection(Projections.rowCount());
         Long total = (Long) countCriteria.uniqueResult();
 
         Criteria criteria = createCriteriaQueryForGetPhrasesForStatus(dictionary, status);
         if (orderByParam.isPresent()) {
-            criteria.addOrder(Order.asc(orderByParam.get().getPropertyName()));
+
+            if (orderSeq.isPresent() && orderSeq.get() == OrderSeq.desc) {
+                criteria.addOrder(Order.desc(orderByParam.get().getPropertyName()));
+            } else {
+                criteria.addOrder(Order.asc(orderByParam.get().getPropertyName()));
+            }
         }
         criteria.setFirstResult((pageNo - 1) * pageSize);
         criteria.setMaxResults(pageSize);

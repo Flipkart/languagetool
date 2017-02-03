@@ -58,6 +58,8 @@ public class UnitOfWorkAwareStreamingOutput implements StreamingOutput {
                 throw new ApiException("Unable to find dictionary with shortcode : " + dictionaryShortCode);
             }
             RegisteredDictionary dictionary = possibleDictionary.get();
+
+            /// Do it for like 50 or 100 phrases at one time..
             for (String phrase : phrases) {
                 PhraseRequest request = new PhraseRequest();
                 request.setStatus(status);

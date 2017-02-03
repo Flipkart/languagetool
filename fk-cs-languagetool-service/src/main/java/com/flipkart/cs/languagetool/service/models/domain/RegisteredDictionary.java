@@ -1,5 +1,7 @@
 package com.flipkart.cs.languagetool.service.models.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.google.common.base.Objects;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -21,11 +23,9 @@ public class RegisteredDictionary {
     private DateTime updatedAt;
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime currentVersionCreatedAt;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "dictionary_to_phrase", joinColumns = {
-            @JoinColumn(name = "languageId", nullable = false, updatable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "requestedPhraseId",
-                    nullable = false, updatable = false) })
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "associatedRegisteredDictionary", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<RequestedPhrase> requestedPhraseList;
 
 
@@ -86,15 +86,17 @@ public class RegisteredDictionary {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         RegisteredDictionary that = (RegisteredDictionary) o;
-
-        return shortCode.equals(that.shortCode);
-
+        return Objects.equal(shortCode, that.shortCode) &&
+                Objects.equal(name, that.name) &&
+                Objects.equal(createdAt, that.createdAt) &&
+                Objects.equal(updatedAt, that.updatedAt) &&
+                Objects.equal(currentVersionCreatedAt, that.currentVersionCreatedAt) &&
+                Objects.equal(requestedPhraseList, that.requestedPhraseList);
     }
 
     @Override
     public int hashCode() {
-        return shortCode.hashCode();
+        return Objects.hashCode(shortCode, name, createdAt, updatedAt, currentVersionCreatedAt, requestedPhraseList);
     }
 }

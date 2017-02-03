@@ -68,6 +68,7 @@ public class LanguageToolServiceModule extends AbstractModule {
                 log.info("Added approved words : " + approvedWords);
             }
         }
+        log.info("Done adding stuff.");
         return jLanguageTool;
 
     }

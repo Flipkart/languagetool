@@ -23,32 +23,55 @@ public class ValidationCache {
 
     private final RequestedPhraseDao requestedPhraseDao;
     private final RegisteredDictionaryDao registeredDictionaryDao;
-    RemovalListener<RegisteredDictionary, CachedEntity> removalListener = new RemovalListener<RegisteredDictionary, CachedEntity>() {
+    RemovalListener<String, CachedEntity> removalListener = new RemovalListener<String, CachedEntity>() {
         @Override
-        public void onRemoval(RemovalNotification<RegisteredDictionary, CachedEntity> notification) {
-            log.info("Removal from cache : " + notification.getKey() + " " + notification.getKey() + " reason: " + notification.getCause());
+        public void onRemoval(RemovalNotification<String, CachedEntity> notification) {
+            log.info("Removal from cache : " + notification.getKey() + " reason: " + notification.getCause());
         }
     };
 
-    // Loading cache for approved words
-    LoadingCache<RegisteredDictionary, CachedEntity> approvedWordsCache = CacheBuilder.newBuilder()
-            .concurrencyLevel(1)
+    // Loading cache for blacklisted words
+//    private final LoadingCache<String, CachedEntity> blacklistedWordsCache = CacheBuilder.newBuilder()
+////            .concurrencyLevel(1)
+//            .removalListener(removalListener)
+//            .build(new CacheLoader<String, CachedEntity>() {
+//                @Override
+//                public CachedEntity load(String shortCode) throws Exception {
+//                    RegisteredDictionary registeredDictionary = registeredDictionaryDao.findById(shortCode).get();
+//                    return new CachedEntity(registeredDictionary.getCurrentVersionCreatedAt(), requestedPhraseDao.getPhrasesAsSetOfStatus(registeredDictionary, RequestStatus.BLACKLISTED));
+//                }
+//            });
+
+    private final LoadingCache<String, CachedEntity> blacklistedWordsCache = CacheBuilder.newBuilder().concurrencyLevel(1)
             .removalListener(removalListener)
-            .build(new CacheLoader<RegisteredDictionary, CachedEntity>() {
+            .build(new CacheLoader<String, CachedEntity>() {
                 @Override
-                public CachedEntity load(RegisteredDictionary key) throws Exception {
-                    return new CachedEntity(key.getCurrentVersionCreatedAt(), requestedPhraseDao.getPhrasesAsSetOfStatus(key, RequestStatus.APPROVED));
+                public CachedEntity load(String shortCode) throws Exception {
+                    RegisteredDictionary registeredDictionary = registeredDictionaryDao.findById(shortCode).get();
+                    return new CachedEntity(registeredDictionary.getCurrentVersionCreatedAt(), requestedPhraseDao.getPhrasesAsSetOfStatus(registeredDictionary, RequestStatus.BLACKLISTED));
+
                 }
             });
 
-    // Loading cache for blacklisted words
-    LoadingCache<RegisteredDictionary, CachedEntity> blacklistedWordsCache = CacheBuilder.newBuilder()
+    // Loading cache for approved words
+//    private final LoadingCache<RegisteredDictionary, CachedEntity> approvedWordsCache = CacheBuilder.newBuilder()
+//            .concurrencyLevel(1)
+//            .removalListener(removalListener)
+//            .build(new CacheLoader<RegisteredDictionary, CachedEntity>() {
+//                @Override
+//                public CachedEntity load(RegisteredDictionary key) throws Exception {
+//                    return new CachedEntity(key.getCurrentVersionCreatedAt(), requestedPhraseDao.getPhrasesAsSetOfStatus(key, RequestStatus.APPROVED));
+//                }
+//            });
+
+    private final LoadingCache<String, CachedEntity> approvedWordsCache = CacheBuilder.newBuilder()
             .concurrencyLevel(1)
             .removalListener(removalListener)
-            .build(new CacheLoader<RegisteredDictionary, CachedEntity>() {
+            .build(new CacheLoader<String, CachedEntity>() {
                 @Override
-                public CachedEntity load(RegisteredDictionary key) throws Exception {
-                    return new CachedEntity(key.getCurrentVersionCreatedAt(), requestedPhraseDao.getPhrasesAsSetOfStatus(key, RequestStatus.BLACKLISTED));
+                public CachedEntity load(String shortCode) throws Exception {
+                    RegisteredDictionary registeredDictionary = registeredDictionaryDao.findById(shortCode).get();
+                    return new CachedEntity(registeredDictionary.getCurrentVersionCreatedAt(), requestedPhraseDao.getPhrasesAsSetOfStatus(registeredDictionary, RequestStatus.APPROVED));
                 }
             });
 
@@ -69,16 +92,16 @@ public class ValidationCache {
         return validateAndGetWords(key, blacklistedWordsCache);
     }
 
-    private Set<String> validateAndGetWords(RegisteredDictionary dictionary, LoadingCache<RegisteredDictionary, CachedEntity> cache) throws ApiException {
+    private Set<String> validateAndGetWords(RegisteredDictionary dictionary, LoadingCache<String, CachedEntity> cache) throws ApiException {
         try {
-            CachedEntity cachedEntity = cache.get(dictionary);
+            CachedEntity cachedEntity = cache.get(dictionary.getShortCode());
             if (dictionary.getCurrentVersionCreatedAt().isAfter(cachedEntity.getCacheCreatedAt())) {
                 /// case where dictionary is at newer time than our cache
-                log.info("Cache miss : called reload "+dictionary.getShortCode());
-                cache.refresh(dictionary);
-                return cache.get(dictionary).getPhrases();
+                log.info("Cache miss : called reload " + dictionary.getShortCode());
+                cache.refresh(dictionary.getShortCode());
+                return cache.get(dictionary.getShortCode()).getPhrases();
             } else {
-                log.info("Cache hit : "+dictionary.getShortCode());
+                log.info("Cache hit : " + dictionary.getShortCode());
                 return cachedEntity.getPhrases();
             }
 

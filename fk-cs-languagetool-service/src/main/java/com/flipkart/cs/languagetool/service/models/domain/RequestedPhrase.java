@@ -1,10 +1,10 @@
 package com.flipkart.cs.languagetool.service.models.domain;
 
+import com.google.common.base.Objects;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by anmol.kapoor on 02/01/17.
@@ -26,21 +26,21 @@ public class RequestedPhrase {
     private String createdBySystem;
     private String modifiedBySystem;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "requestedPhraseList")
-    private List<RegisteredDictionary> registeredDictionaryList;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dictionary_id", nullable = false)
+    private RegisteredDictionary associatedRegisteredDictionary;
 
     public RequestedPhrase() {
     }
 
-    public RequestedPhrase(String phrase, RequestStatus currentStatus, List<RegisteredDictionary> registeredDictionary) {
+    public RequestedPhrase(String phrase, RequestStatus currentStatus, RegisteredDictionary associatedRegisteredDictionary) {
         this.phrase = phrase;
         this.currentStatus = currentStatus;
-        this.registeredDictionaryList = registeredDictionary;
+        this.associatedRegisteredDictionary = associatedRegisteredDictionary;
         this.modifiedBySystem = createdBySystem;
         this.requestCount = 0;
-        if(currentStatus == RequestStatus.REQUESTED)
-        {
-            this.requestCount = this.requestCount+1;
+        if (currentStatus == RequestStatus.REQUESTED) {
+            this.requestCount = this.requestCount + 1;
         }
 
 
@@ -64,8 +64,8 @@ public class RequestedPhrase {
         return modifiedAt;
     }
 
-    public List<RegisteredDictionary> getRegisteredDictionaryList() {
-        return registeredDictionaryList;
+    public RegisteredDictionary getAssociatedRegisteredDictionary() {
+        return associatedRegisteredDictionary;
     }
 
     public String getCreatedByUser() {
@@ -106,8 +106,8 @@ public class RequestedPhrase {
         this.modifiedAt = modifiedAt;
     }
 
-    public void setRegisteredDictionaryList(List<RegisteredDictionary> registeredDictionaryList) {
-        this.registeredDictionaryList = registeredDictionaryList;
+    public void setAssociatedRegisteredDictionary(RegisteredDictionary associatedRegisteredDictionary) {
+        this.associatedRegisteredDictionary = associatedRegisteredDictionary;
     }
 
     public void setCreatedByUser(String createdByUser) {
@@ -128,5 +128,26 @@ public class RequestedPhrase {
 
     public void setRequestCount(Integer requestCount) {
         this.requestCount = requestCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RequestedPhrase that = (RequestedPhrase) o;
+        return Objects.equal(phrase, that.phrase) &&
+                currentStatus == that.currentStatus &&
+                Objects.equal(requestCount, that.requestCount) &&
+                Objects.equal(createdAt, that.createdAt) &&
+                Objects.equal(modifiedAt, that.modifiedAt) &&
+                Objects.equal(createdByUser, that.createdByUser) &&
+                Objects.equal(modifiedByUser, that.modifiedByUser) &&
+                Objects.equal(createdBySystem, that.createdBySystem) &&
+                Objects.equal(modifiedBySystem, that.modifiedBySystem);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(phrase, currentStatus, requestCount, createdAt, modifiedAt, createdByUser, modifiedByUser, createdBySystem, modifiedBySystem);
     }
 }

@@ -13,7 +13,6 @@ import com.flipkart.cs.languagetool.service.models.dtos.RequestHeaders;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -95,7 +94,7 @@ public class LanguageToolService {
                 requestedPhrase = requestedPhrasesInDb.get(phraseRequested);
                 response = changeStateToRequestedState(requestedPhrase, requestedStatus);
             } else {
-                requestedPhrase = new RequestedPhrase(phraseRequested, requestedStatus, Lists.newArrayList(dictionary));
+                requestedPhrase = new RequestedPhrase(phraseRequested, requestedStatus, dictionary);
                 dictionary.getRequestedPhraseList().add(requestedPhrase);
                 response = new PhraseActionResponse(requestedPhrase.getPhrase(), requestedPhrase.getCurrentStatus(), requestedPhrase.getRequestCount(), "Created new Phrase in state : " + requestedPhrase.getCurrentStatus(), true, true);
             }

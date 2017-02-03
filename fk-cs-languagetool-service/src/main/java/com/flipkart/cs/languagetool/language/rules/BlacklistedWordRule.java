@@ -53,14 +53,14 @@ public class BlacklistedWordRule extends Rule {
         // be a special token that indicates the start of a sentence:
         for (AnalyzedTokenReadings token : tokens) {
 
-            log.info("Token: " + token.getToken());  // the original word from the input text
+//            log.info("Token: " + token.getToken());  // the original word from the input text
 
             // A word can have more than one reading, e.g. 'dance' can be a verb or a noun,
             // so we iterate over the readings:
             Set<String> lemmas = new HashSet<>();
             for (AnalyzedToken analyzedToken : token.getReadings()) {
                 String lemma = analyzedToken.getLemma();
-                log.info("  Lemma: " + lemma);
+//                log.info("  Lemma: " + lemma);
                 if (lemma != null) {
                     lemmas.add(lemma);
                 }

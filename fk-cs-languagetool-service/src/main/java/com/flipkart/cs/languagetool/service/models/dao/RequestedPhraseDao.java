@@ -34,7 +34,7 @@ public class RequestedPhraseDao extends AbstractDAO<RequestedPhrase> {
 
     public List<RequestedPhrase> findByIds(Set<String> phrases) {
         Criteria criteria = currentSession().createCriteria(RequestedPhrase.class);
-        criteria.createAlias("registeredDictionaryList", "dic");
+        criteria.createAlias("associatedRegisteredDictionary", "dic");
         criteria.add(
                 Restrictions.and(Restrictions.eq("dic.shortCode", RequestHeaders.get().getDictionary()),
                         Restrictions.in("phrase", phrases))
@@ -67,7 +67,7 @@ public class RequestedPhraseDao extends AbstractDAO<RequestedPhrase> {
 
     public Set<String> getPhrasesAsSetOfStatus(RegisteredDictionary dictionary, RequestStatus status) {
         Criteria criteria = currentSession().createCriteria(RequestedPhrase.class);
-        criteria.createAlias("registeredDictionaryList", "dic");
+        criteria.createAlias("associatedRegisteredDictionary", "dic");
         criteria.add(
                 Restrictions.and(Restrictions.eq("dic.shortCode", dictionary.getShortCode()),
                         Restrictions.in("currentStatus", status))
@@ -116,7 +116,7 @@ public class RequestedPhraseDao extends AbstractDAO<RequestedPhrase> {
 
     private Criteria createCriteriaQueryForGetPhrasesForStatus(RegisteredDictionary dictionary, RequestStatus status) {
         Criteria criteria = currentSession().createCriteria(RequestedPhrase.class);
-        criteria.createAlias("registeredDictionaryList", "dic");
+        criteria.createAlias("associatedRegisteredDictionary", "dic");
         criteria.add(
                 Restrictions.and(Restrictions.eq("dic.shortCode", dictionary.getShortCode()),
                         Restrictions.in("currentStatus", status))

@@ -173,7 +173,7 @@ public class English extends Language implements AutoCloseable {
         new UppercaseSentenceStartRule(messages, this,
                 Example.wrong("This house is old. <marker>it</marker> was built in 1950."),
                 Example.fixed("This house is old. <marker>It</marker> was built in 1950.")),
-        new MultipleWhitespaceRule(messages, this),
+//        new MultipleWhitespaceRule(messages, this),
         new LongSentenceRule(messages),
         new SentenceWhitespaceRule(messages),
         // specific to English:

@@ -48,12 +48,34 @@ public class LanguageToolApiResource {
         this.hibernateBundle = hibernateBundle;
     }
 
+//    @POST
+//    @Path("/check")
+//    @UnitOfWork
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public CheckTextResponse checkTextWithLanguageTool(@Valid CheckTextRequest request) throws ApiException {
+//
+//        RegisteredDictionary dictionary = validateAndGetDictionary();
+//        JLanguageTool jLanguageTool = jLanguageToolProvider.get();
+//        List<RuleMatch> ruleMatchList = new ArrayList<>();
+//        try {
+//
+//            ruleMatchList = jLanguageTool.check(request.getText());
+//            log.info("Rules Matched : " + ruleMatchList.size());
+//        } catch (IOException e) {
+//            throw new ApiException(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+//        }
+//        return mapperRuleMatches.toCheckTextResponse(ruleMatchList, new CheckTextResponse(), jLanguageTool.getLanguage(), request.getText());
+//    }
+
+
     @POST
     @Path("/check")
     @UnitOfWork
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public CheckTextResponse checkTextWithLanguageTool(@Valid CheckTextRequest request) throws ApiException {
+    public CheckTextResponse checkTextWithLanguageTool2(@Valid CheckTextRequest request) throws ApiException {
+
         RegisteredDictionary dictionary = validateAndGetDictionary();
         JLanguageTool jLanguageTool = jLanguageToolProvider.get();
         List<RuleMatch> ruleMatchList = new ArrayList<>();
@@ -65,7 +87,14 @@ public class LanguageToolApiResource {
             throw new ApiException(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
         return mapperRuleMatches.toCheckTextResponse(ruleMatchList, new CheckTextResponse(), jLanguageTool.getLanguage(), request.getText());
+
+
+//        CheckTextResponse checkTextResponse = new CheckTextResponse();
+//        checkTextResponse.setLanguage(new LanguageResponse("Flipkart","en","cs-email"));
+//        checkTextResponse.setMatches(new ArrayList<>());
+//        return checkTextResponse;
     }
+
 
     private RegisteredDictionary validateAndGetDictionary() throws ApiException {
         String shortCode = RequestHeaders.get().getDictionary();

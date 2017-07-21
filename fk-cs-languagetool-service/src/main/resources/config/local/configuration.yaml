@@ -17,7 +17,7 @@ database:
   minSize: 8
 
   # the maximum number of connections to keep open
-  maxSize: 32
+  maxSize: 100
   properties:
       charSet: UTF-8
       hibernate.show_sql: true
@@ -35,7 +35,7 @@ database:
 server:
   applicationConnectors:
   - type: http
-    port: 6900
+    port: 6100
     idleTimeout: 30 seconds
     acceptorThreads: 1
     selectorThreads: 2
@@ -43,7 +43,7 @@ server:
     useDateHeader: true
   adminConnectors:
   - type: http
-    port: 6901
+    port: 6101
     idleTimeout: 30 seconds
     acceptorThreads: 1
     selectorThreads: 2

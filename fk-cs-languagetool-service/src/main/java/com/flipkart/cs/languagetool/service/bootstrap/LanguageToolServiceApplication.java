@@ -6,12 +6,16 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.flipkart.abt.rotationBundle.RotationManagementConfig;
 import com.flipkart.abt.rotationBundle.bundle.RotationManagementBundle;
 import com.flipkart.abt.rotationBundle.tasks.RotationManagementTask;
+import com.flipkart.cs.languagetool.service.SimpleHibernateTxnManager;
+import com.flipkart.cs.languagetool.service.cache.ValidationCache;
 import com.flipkart.cs.languagetool.service.exception.ApiExceptionMapper;
 import com.flipkart.cs.languagetool.service.exception.CustomJsonMappingExceptionMapper;
 import com.flipkart.cs.languagetool.service.exception.GenericExceptionMapper;
 import com.flipkart.cs.languagetool.service.exception.NotFoundExceptionMapper;
 import com.flipkart.cs.languagetool.service.filters.RequestFilter;
 import com.flipkart.cs.languagetool.service.filters.ResponseFilter;
+import com.flipkart.cs.languagetool.service.models.dtos.CheckTextRequest;
+import com.flipkart.cs.languagetool.service.models.dtos.RequestHeaders;
 import com.flipkart.cs.languagetool.service.resources.ConsoleResource;
 import com.flipkart.cs.languagetool.service.resources.LanguageToolApiResource;
 import com.google.inject.Guice;
@@ -48,9 +52,14 @@ public class LanguageToolServiceApplication extends Application<LanguageToolServ
     public void run(LanguageToolServiceConfig languageToolServiceConfig, Environment environment) throws Exception {
         RotationManagementTask task = rotationManagementBundle.getTask();
         /// register components to this task;
+
         Injector injector = createInjector(languageToolServiceConfig, hibernate,task);
+
+
+        LanguageToolApiResource languageToolApiResource = injector.getInstance(LanguageToolApiResource.class);
+
         environment.jersey().register(injector.getInstance(ConsoleResource.class));
-        environment.jersey().register(injector.getInstance(LanguageToolApiResource.class));
+        environment.jersey().register(languageToolApiResource);
         environment.jersey().register(injector.getInstance(ApiExceptionMapper.class));
         environment.jersey().register(injector.getInstance(GenericExceptionMapper.class));
         environment.jersey().register(injector.getInstance(NotFoundExceptionMapper.class));
@@ -67,6 +76,34 @@ public class LanguageToolServiceApplication extends Application<LanguageToolServ
         cors.setInitParameter("allowedHeaders", "*");
         cors.setInitParameter("allowedMethods", "GET,PUT,POST,DELETE,OPTIONS,HEAD");
         cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+
+        log.info("Loading cache before startup ");
+        injector.getInstance(ValidationCache.class).loadValidationCaches();
+        log.info("Loading cache before startup ... done");
+
+        log.info("Warming up with a smaple request");
+
+        RequestHeaders.clear();
+        RequestHeaders.get().setDictionary("cs-email");
+        RequestHeaders.get().setUser("warmup-user");
+        RequestHeaders.get().setClientId("warmup-client");
+        CheckTextRequest checkTextRequest = new CheckTextRequest();
+        checkTextRequest.setText("Hi,\\n\\nOrder ID: OD109568678757036000\\n\\nThank you for contacting Flipkart Customer Support.\\n\\nI would like to inform you that the product 'LG 6 kg Fully Automatic Front Load Washing Machine' selling price was Rs. 25,499/- on 30 Jun 17, 07:41 PM and the same has been collected from your end. You have placed the product on 30 Jun 17, 07:41 PM.\\n\\nFeel free to get in touch with us in case you need any further assistance.\\n\\nI request your kind understanding in this regard.??\\n\"");
+        SimpleHibernateTxnManager simpleTx = injector.getInstance(SimpleHibernateTxnManager.class);
+        simpleTx.createAndBindHibernateSession();
+        try {
+            languageToolApiResource.checkTextWithLanguageTool2(checkTextRequest);
+        } catch (Exception e) {
+        } finally {
+            simpleTx.closeSessionCommitOrRollBackTxn(true);
+        }
+
+        RequestHeaders.clear();
+        log.info("Warming up with a smaple request ... done");
+
+
+
+
     }
 
     private Injector createInjector(LanguageToolServiceConfig languageToolServiceConfig,

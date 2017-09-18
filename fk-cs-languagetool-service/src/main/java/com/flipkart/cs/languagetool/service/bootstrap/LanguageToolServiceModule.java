@@ -4,6 +4,7 @@ import com.flipkart.abt.rotationBundle.tasks.RotationManagementTask;
 import com.flipkart.cs.languagetool.language.FlipkartLanguage;
 import com.flipkart.cs.languagetool.service.LanguageToolService;
 import com.flipkart.cs.languagetool.service.exception.ApiException;
+import com.flipkart.kloud.config.ConfigClient;
 import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -41,6 +42,13 @@ public class LanguageToolServiceModule extends AbstractModule {
         bind(HibernateBundle.class).toInstance(hibernate);
         bind(RotationManagementTask.class).toInstance(rotationTask);
 
+    }
+
+    @Provides
+    @Singleton
+    public ConfigClient provideConfigClient()
+    {
+        return new ConfigClient();
     }
 
     @Provides

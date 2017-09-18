@@ -6,6 +6,8 @@ import com.flipkart.cs.languagetool.service.mappers.MapperRuleMatches;
 import com.flipkart.cs.languagetool.service.models.dao.RegisteredDictionaryDao;
 import com.flipkart.cs.languagetool.service.models.domain.RegisteredDictionary;
 import com.flipkart.cs.languagetool.service.models.dtos.*;
+import com.flipkart.kloud.config.ConfigClient;
+import com.flipkart.kloud.config.DynamicBucket;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -38,14 +40,16 @@ public class LanguageToolApiResource {
     private final LanguageToolService languageToolService;
     private final RegisteredDictionaryDao registeredDictionaryDao;
     private final HibernateBundle hibernateBundle;
+    private final ConfigClient configClient;
 
     @Inject
-    public LanguageToolApiResource(Provider<JLanguageTool> jLanguageToolProvider, MapperRuleMatches mapperRuleMatches, LanguageToolService languageToolService, RegisteredDictionaryDao registeredDictionaryDao, HibernateBundle hibernateBundle) {
+    public LanguageToolApiResource(Provider<JLanguageTool> jLanguageToolProvider, MapperRuleMatches mapperRuleMatches, LanguageToolService languageToolService, RegisteredDictionaryDao registeredDictionaryDao, HibernateBundle hibernateBundle, ConfigClient configClient) {
         this.jLanguageToolProvider = jLanguageToolProvider;
         this.mapperRuleMatches = mapperRuleMatches;
         this.languageToolService = languageToolService;
         this.registeredDictionaryDao = registeredDictionaryDao;
         this.hibernateBundle = hibernateBundle;
+        this.configClient = configClient;
     }
 
 //    @POST
@@ -76,6 +80,20 @@ public class LanguageToolApiResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public CheckTextResponse checkTextWithLanguageTool2(@Valid CheckTextRequest request) throws ApiException {
 
+        Boolean shouldStop = false;
+        try {
+            DynamicBucket dynamicBucket = configClient.getDynamicBucket("fk-cs-languagetool-service.stopSpellCheck");
+            shouldStop = dynamicBucket.getBoolean("shouldStop");
+        } catch (Exception e) {
+
+        }
+        if (shouldStop) {
+            CheckTextResponse checkTextResponse = new CheckTextResponse();
+            checkTextResponse.setLanguage(new LanguageResponse("Flipkart", "en", "cs-email"));
+            checkTextResponse.setMatches(new ArrayList<>());
+            return checkTextResponse;
+        }
+
         RegisteredDictionary dictionary = validateAndGetDictionary();
         JLanguageTool jLanguageTool = jLanguageToolProvider.get();
         List<RuleMatch> ruleMatchList = new ArrayList<>();
@@ -88,11 +106,6 @@ public class LanguageToolApiResource {
         }
         return mapperRuleMatches.toCheckTextResponse(ruleMatchList, new CheckTextResponse(), jLanguageTool.getLanguage(), request.getText());
 
-
-//        CheckTextResponse checkTextResponse = new CheckTextResponse();
-//        checkTextResponse.setLanguage(new LanguageResponse("Flipkart","en","cs-email"));
-//        checkTextResponse.setMatches(new ArrayList<>());
-//        return checkTextResponse;
     }
 
 

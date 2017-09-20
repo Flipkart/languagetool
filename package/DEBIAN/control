@@ -1,6 +1,6 @@
 Package: _PACKAGE_
 Version: _VERSION_
-Section: flipkart/cs/fk-cs-language-service
+Section: flipkart/cs/fk-cs-languagetool-service
 Priority: standard
 Depends: oracle-java8-jdk, fk-ops-servicebuilder, fk-ops-hosts-populator, stream-relay, cosmos-base
 Architecture: all

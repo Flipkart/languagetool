@@ -2,8 +2,8 @@
 
 set -x
 
-PAC=fk-cs-language-service
-USER=fk-cs-language-service
+PAC=fk-cs-languagetool-service
+USER=fk-cs-languagetool-service
 GROUP=fk-erp
 
 USER_ID=35010

@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-PAC=fk-cs-language-service
+PAC=fk-cs-languagetool-service
 CMD="$1"
 BASE_DIR=__BASE_DIR__
 SERVICE_NAME=$PAC

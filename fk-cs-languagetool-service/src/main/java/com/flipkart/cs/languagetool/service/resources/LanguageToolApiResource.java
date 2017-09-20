@@ -80,13 +80,13 @@ public class LanguageToolApiResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public CheckTextResponse checkTextWithLanguageTool2(@Valid CheckTextRequest request) throws ApiException {
 
-        Boolean shouldStop = true;
-//        try {
-//            DynamicBucket dynamicBucket = configClient.getDynamicBucket("fk-cs-languagetool-service.stopSpellCheck");
-//            shouldStop = dynamicBucket.getBoolean("shouldStop");
-//        } catch (Exception e) {
-//
-//        }
+        Boolean shouldStop = false;
+        try {
+            DynamicBucket dynamicBucket = configClient.getDynamicBucket("fk-cs-languagetool-service.stopSpellCheck");
+            shouldStop = dynamicBucket.getBoolean("shouldStop");
+        } catch (Exception e) {
+
+        }
         if (shouldStop) {
             CheckTextResponse checkTextResponse = new CheckTextResponse();
             checkTextResponse.setLanguage(new LanguageResponse("Flipkart", "en", "cs-email"));

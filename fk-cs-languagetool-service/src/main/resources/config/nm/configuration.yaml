@@ -1,11 +1,11 @@
 
 database:
   driverClass: com.mysql.jdbc.Driver
-  user: root
-  #password: fk-abt
+  user: language_user
+  password: language_pass
 
   # the JDBC URL
-  url: jdbc:mysql://localhost:3306/languagetool_2
+  url: jdbc:mysql://10.85.108.5:3306/languagetool_2
 
   # the maximum amount of time to wait on an empty pool before throwing an exception
   maxWaitForConnection: 1s
@@ -17,7 +17,7 @@ database:
   minSize: 8
 
   # the maximum number of connections to keep open
-  maxSize: 100
+  maxSize: 80
   properties:
       charSet: UTF-8
       hibernate.show_sql: true

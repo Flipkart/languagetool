@@ -59,7 +59,7 @@ cd "$DEB_DIR"
 BASE_DIR="/usr/share/$PACKAGE"
 
 
-cp target/fk-cs-languagetool-service-*.jar ."$BASE_DIR/service"
-cp src/main/resources/config/$ENV/configuration.yaml .$BASE_DIR/service
+cp ../fk-cs-languagetool-service/target/fk-cs-languagetool-service-*.jar ."$BASE_DIR/service"
+cp ../fk-cs-languagetool-service/src/main/resources/config/$ENV/configuration.yaml .$BASE_DIR/service
 find *
 cd $OLD_DIR

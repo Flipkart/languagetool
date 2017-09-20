@@ -1,0 +1,8 @@
+Package: _PACKAGE_
+Version: _VERSION_
+Section: flipkart/cs/fk-cs-language-service
+Priority: standard
+Depends: oracle-java8-jdk, fk-ops-servicebuilder, fk-ops-hosts-populator, stream-relay, cosmos-base
+Architecture: all
+Maintainer: CRM Team <crm-tech@flipkart.com>
+Description: CS Groot:_PACKAGE_ branch: _BRANCH_ createdAt: _CREATETIME_

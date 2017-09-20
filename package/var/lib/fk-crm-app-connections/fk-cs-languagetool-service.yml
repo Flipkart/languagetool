@@ -1,0 +1,4 @@
+servicePort: 6100
+cosmosPublish: true
+servicePackage: fk-cs-languagetool-service
+cosmosKey: fk-cs-languagetool-service.app-connections

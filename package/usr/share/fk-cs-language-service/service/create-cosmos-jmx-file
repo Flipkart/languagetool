@@ -1,0 +1,10 @@
+source /etc/default/megh/env_var
+export HOST=$MEGH_HOSTNAME
+export PORT=$1
+export PROCESS=$MEGH_APPID
+echo "{\"servers\":[{\"port\":\"$PORT\",\"host\":\"$HOST\",\"process\":\"$PROCESS\",\"queries\":[{\"obj\":\"*\"}],\"numQueryThreads\":2}]}" > /etc/cosmos-jmx/$PROCESS.json
+
+sudo /etc/init.d/cosmos-collectd restart
+sudo /etc/init.d/cosmos-jmx restart
+
+echo "check matrix at : http://<API_END_POINT>/api/suggest?type=metrics&q=$PROCESS&max=100000"

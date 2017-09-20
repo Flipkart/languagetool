@@ -71,7 +71,7 @@ logging:
       logFormat: "%date %highlight(%-5level) [%thread] %cyan(%logger{10}) [%X{id}] %msg%n"
 
 rotationManagementConfig:
-  persistantFilePath: "/var/log/flipkart/erp/fk-crm-svc-backend/rotation_status.txt"
+  persistantFilePath: "/var/log/flipkart/erp/fk-cs-languagetool-service/rotation_status.txt"
 #httpClientConfigXMLName: "HttpClientConfig.local.xml"
 #
 #rpServices:

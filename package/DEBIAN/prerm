@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+PAC=fk-cs-language-service
+CMD="$1"
+BASE_DIR=__BASE_DIR__
+SERVICE_NAME=$PAC
+
+if [ "$CMD" == "remove" -o "$CMD" == "upgrade" ]; then
+	sudo svc -d /etc/sv/$SERVICE_NAME
+fi

@@ -1,0 +1,1 @@
+rule=:%date:date-iso% %time:time-24hr%,%milli:word% %severity:word%  [%thread:char-to:]%] %class:word% [%transaction_id:char-to:]%] %message:rest%

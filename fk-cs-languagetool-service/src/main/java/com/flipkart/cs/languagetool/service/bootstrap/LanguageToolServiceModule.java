@@ -73,7 +73,6 @@ public class LanguageToolServiceModule extends AbstractModule {
         for (Rule rule : jLanguageTool.getAllActiveRules()) {
             if (rule instanceof SpellingCheckRule) {
                 ((SpellingCheckRule) rule).acceptPhrases(Lists.newArrayList(approvedWords));
-                log.info("Added approved words : " + approvedWords);
             }
         }
         log.info("Done adding stuff.");

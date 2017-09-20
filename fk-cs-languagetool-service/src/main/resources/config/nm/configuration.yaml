@@ -56,24 +56,25 @@ server:
     appenders:
       - type: file
         currentLogFilename: /var/log/flipkart/erp/fk-cs-languagetool-service/requests.log
-        archivedLogFilenamePattern: /var/log/flipkart/erp/fk-cs-languagetool-service/requests-%d{yyyy-MM-dd_HH}.log.gz
-        archivedFileCount: 48
+        archivedLogFilenamePattern: /var/log/flipkart/erp/fk-cs-languagetool-service/requests-%i.log.gz
         timeZone: IST
+        archive: true
+        archivedFileCount: 10
+        maxFileSize: 1GB
 
 logging:
   level: INFO
   appenders:
-    - type: console
-      logFormat: "%date %highlight(%-5level) [%thread] %cyan(%logger{10}) [%X{id}] %msg%n"
     - type: file
       currentLogFilename: /var/log/flipkart/erp/fk-cs-languagetool-service/svc.log
-      archivedLogFilenamePattern: /var/log/flipkart/erp/fk-cs-languagetool-service/svc-%d{yyyy-MM-dd_HH}.log.gz
-      archivedFileCount: 48
-      timeZone: IST
-      logFormat: "%date %highlight(%-5level) [%thread] %cyan(%logger{10}) [%X{id}] %msg%n"
+      archivedLogFilenamePattern: /var/log/flipkart/erp/fk-cs-languagetool-service/svc-%i.log.gz
+      logFormat: "%date %highlight(%-5level) [%thread] %logger{10} [%X{id}] %msg%n"
+      archive: true
+      archivedFileCount: 10
+      maxFileSize: 1GB
 
 rotationManagementConfig:
-  persistantFilePath: "/var/log/flipkart/erp/fk-crm-svc-backend/rotation_status.txt"
+  persistantFilePath: "/var/log/flipkart/erp/fk-cs-languagetool-service/rotation_status.txt"
 #httpClientConfigXMLName: "HttpClientConfig.local.xml"
 #
 #rpServices:

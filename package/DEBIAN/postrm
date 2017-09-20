@@ -1,0 +1,19 @@
+#!/bin/bash -e
+
+PAC=fk-cs-language-service
+CMD="$1"
+BASE_DIR=__BASE_DIR__
+SERVICE_NAME=$PAC
+
+if [ "$CMD" == "purge" ]; then
+
+    sudo svc -d /etc/sv/$SERVICE_NAME
+
+	rm -rf /var/log/flipkart/erp/$PAC
+    rm -rf /usr/share/$PAC || true
+
+	[ "$BASE_DIR" ] && rm -rf $BASE_DIR
+
+fi
+
+

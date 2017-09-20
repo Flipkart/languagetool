@@ -1,0 +1,1 @@
+rule=:%client_ip:word% - - [%access_time:char-to:]%] "%verb:word% %uri:word% %http_version:char-to:"%" %status:interpret:int:number% %post:interpret:int:number% "%uri:char-to:"%" "%useragent:char-to:"%" %bytes:word%

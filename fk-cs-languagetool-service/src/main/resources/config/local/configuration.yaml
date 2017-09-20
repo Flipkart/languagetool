@@ -72,6 +72,10 @@ logging:
 
 rotationManagementConfig:
   persistantFilePath: "/var/log/flipkart/erp/fk-cs-languagetool-service/rotation_status.txt"
+
+
+configPrefix: fk-cs-languagetool-service.local
+
 #httpClientConfigXMLName: "HttpClientConfig.local.xml"
 #
 #rpServices:

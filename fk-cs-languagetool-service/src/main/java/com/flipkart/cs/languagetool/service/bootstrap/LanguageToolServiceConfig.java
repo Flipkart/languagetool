@@ -21,4 +21,7 @@ public class LanguageToolServiceConfig extends Configuration {
 
     @NotNull
     private RotationManagementConfig rotationManagementConfig;
+
+    @NotNull
+    private String configPrefix;
 }

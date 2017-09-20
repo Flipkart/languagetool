@@ -1,6 +1,10 @@
 package com.flipkart.cs.languagetool.service.resources;
 
+import com.codahale.metrics.annotation.ExceptionMetered;
+import com.codahale.metrics.annotation.Timed;
 import com.flipkart.cs.languagetool.service.LanguageToolService;
+import com.flipkart.cs.languagetool.service.SimpleHibernateTxnManager;
+import com.flipkart.cs.languagetool.service.bootstrap.LanguageToolServiceConfig;
 import com.flipkart.cs.languagetool.service.exception.ApiException;
 import com.flipkart.cs.languagetool.service.mappers.MapperRuleMatches;
 import com.flipkart.cs.languagetool.service.models.dao.RegisteredDictionaryDao;
@@ -39,72 +43,74 @@ public class LanguageToolApiResource {
     private final MapperRuleMatches mapperRuleMatches;
     private final LanguageToolService languageToolService;
     private final RegisteredDictionaryDao registeredDictionaryDao;
-    private final HibernateBundle hibernateBundle;
+    private final Provider<SimpleHibernateTxnManager> simpleHibernateTxnManager;
     private final ConfigClient configClient;
+    private final LanguageToolServiceConfig config;
 
     @Inject
-    public LanguageToolApiResource(Provider<JLanguageTool> jLanguageToolProvider, MapperRuleMatches mapperRuleMatches, LanguageToolService languageToolService, RegisteredDictionaryDao registeredDictionaryDao, HibernateBundle hibernateBundle, ConfigClient configClient) {
+    public LanguageToolApiResource( Provider<JLanguageTool> jLanguageToolProvider, MapperRuleMatches mapperRuleMatches,
+                                   LanguageToolService languageToolService, RegisteredDictionaryDao registeredDictionaryDao,
+                                   Provider<SimpleHibernateTxnManager> simpleHibernateTxnManager, ConfigClient configClient, LanguageToolServiceConfig config) {
         this.jLanguageToolProvider = jLanguageToolProvider;
         this.mapperRuleMatches = mapperRuleMatches;
         this.languageToolService = languageToolService;
         this.registeredDictionaryDao = registeredDictionaryDao;
-        this.hibernateBundle = hibernateBundle;
+        this.simpleHibernateTxnManager = simpleHibernateTxnManager;
+
         this.configClient = configClient;
+        this.config = config;
     }
 
-//    @POST
-//    @Path("/check")
-//    @UnitOfWork
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public CheckTextResponse checkTextWithLanguageTool(@Valid CheckTextRequest request) throws ApiException {
-//
-//        RegisteredDictionary dictionary = validateAndGetDictionary();
-//        JLanguageTool jLanguageTool = jLanguageToolProvider.get();
-//        List<RuleMatch> ruleMatchList = new ArrayList<>();
-//        try {
-//
-//            ruleMatchList = jLanguageTool.check(request.getText());
-//            log.info("Rules Matched : " + ruleMatchList.size());
-//        } catch (IOException e) {
-//            throw new ApiException(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), e);
-//        }
-//        return mapperRuleMatches.toCheckTextResponse(ruleMatchList, new CheckTextResponse(), jLanguageTool.getLanguage(), request.getText());
-//    }
 
+    private CheckTextResponse createEmptyResponse() {
+        CheckTextResponse checkTextResponse = new CheckTextResponse();
+        checkTextResponse.setLanguage(new LanguageResponse("Flipkart", "en", "cs-email"));
+        checkTextResponse.setMatches(new ArrayList<>());
+        return checkTextResponse;
+    }
 
     @POST
     @Path("/check")
     @UnitOfWork
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Timed
+    @ExceptionMetered
     public CheckTextResponse checkTextWithLanguageTool2(@Valid CheckTextRequest request) throws ApiException {
 
         Boolean shouldStop = false;
+
         try {
-            DynamicBucket dynamicBucket = configClient.getDynamicBucket("fk-cs-languagetool-service.stopSpellCheck");
+            String key = config.getConfigPrefix() + ".stopSpellCheck";
+            log.info("looking for key: " + key);
+            DynamicBucket dynamicBucket = configClient.getDynamicBucket(key);
             shouldStop = dynamicBucket.getBoolean("shouldStop");
         } catch (Exception e) {
 
         }
         if (shouldStop) {
-            CheckTextResponse checkTextResponse = new CheckTextResponse();
-            checkTextResponse.setLanguage(new LanguageResponse("Flipkart", "en", "cs-email"));
-            checkTextResponse.setMatches(new ArrayList<>());
-            return checkTextResponse;
+            return createEmptyResponse();
         }
 
-        RegisteredDictionary dictionary = validateAndGetDictionary();
-        JLanguageTool jLanguageTool = jLanguageToolProvider.get();
-        List<RuleMatch> ruleMatchList = new ArrayList<>();
-        try {
+        SimpleHibernateTxnManager simpleHibernateTxnManagerInstance = this.simpleHibernateTxnManager.get();
+        simpleHibernateTxnManagerInstance.createAndBindHibernateSession();
+        boolean isExceptionOccured = false;
 
+
+        try {
+            RegisteredDictionary dictionary = validateAndGetDictionary();
+            JLanguageTool jLanguageTool = jLanguageToolProvider.get();
+            List<RuleMatch> ruleMatchList = new ArrayList<>();
             ruleMatchList = jLanguageTool.check(request.getText());
             log.info("Rules Matched : " + ruleMatchList.size());
-        } catch (IOException e) {
-            throw new ApiException(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+            return mapperRuleMatches.toCheckTextResponse(ruleMatchList, new CheckTextResponse(), jLanguageTool.getLanguage(), request.getText());
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage(), e);
+            isExceptionOccured = true;
+            return createEmptyResponse();
+        } finally {
+            simpleHibernateTxnManagerInstance.closeSessionCommitOrRollBackTxn(isExceptionOccured);
         }
-        return mapperRuleMatches.toCheckTextResponse(ruleMatchList, new CheckTextResponse(), jLanguageTool.getLanguage(), request.getText());
 
     }
 
@@ -126,6 +132,8 @@ public class LanguageToolApiResource {
     @UnitOfWork
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Timed
+    @ExceptionMetered
     public List<PhraseActionResponse> requestToAddWord(@Valid PhraseRequest phraseRequest) throws ApiException {
 
         RegisteredDictionary dictionary = validateAndGetDictionary();

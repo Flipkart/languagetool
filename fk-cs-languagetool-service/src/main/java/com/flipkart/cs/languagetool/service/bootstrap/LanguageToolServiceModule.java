@@ -75,6 +75,7 @@ public class LanguageToolServiceModule extends AbstractModule {
                 ((SpellingCheckRule) rule).acceptPhrases(Lists.newArrayList(approvedWords));
             }
         }
+        jLanguageTool.disableRule("WHITESPACE_RULE");
         log.info("Done adding stuff.");
         return jLanguageTool;
 

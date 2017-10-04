@@ -103,7 +103,11 @@ public class LanguageToolApiResource {
             List<RuleMatch> ruleMatchList = new ArrayList<>();
             ruleMatchList = jLanguageTool.check(request.getText());
             log.info("Rules Matched : " + ruleMatchList.size());
-            return mapperRuleMatches.toCheckTextResponse(ruleMatchList, new CheckTextResponse(), jLanguageTool.getLanguage(), request.getText());
+            CheckTextResponse checkTextResponse = mapperRuleMatches.toCheckTextResponse(ruleMatchList, new CheckTextResponse(), jLanguageTool.getLanguage(), request.getText());
+
+            checkTextResponse = filterCheckTextResponseAndFilterFewRulesOut(checkTextResponse);
+            return checkTextResponse;
+
         } catch (Exception e) {
             log.error(e.getLocalizedMessage(), e);
             isExceptionOccured = true;
@@ -111,6 +115,22 @@ public class LanguageToolApiResource {
         } finally {
             simpleHibernateTxnManagerInstance.closeSessionCommitOrRollBackTxn(isExceptionOccured);
         }
+
+    }
+
+    private CheckTextResponse filterCheckTextResponseAndFilterFewRulesOut(CheckTextResponse checkTextResponse) {
+        List<MatchResponse> finalMatchResponse = new ArrayList<>();
+        for (MatchResponse matchResponse : checkTextResponse.getMatches()) {
+           if(matchResponse.getRule().getId()!=null && matchResponse.getRule().getId().equals("WHITESPACE_RULE"))
+           {
+               log.info("Stopping WHITESPACE_RULE");
+           }else
+           {
+               finalMatchResponse.add(matchResponse);
+           }
+        }
+        checkTextResponse.setMatches(finalMatchResponse);
+        return checkTextResponse;
 
     }
 

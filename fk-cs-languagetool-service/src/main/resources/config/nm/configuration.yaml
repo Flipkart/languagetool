@@ -5,7 +5,7 @@ database:
   password: language_pass
 
   # the JDBC URL
-  url: jdbc:mysql://10.85.108.5:3306/languagetool_2
+  url: jdbc:mysql://10.85.116.143:3306/languagetool_2
 
   # the maximum amount of time to wait on an empty pool before throwing an exception
   maxWaitForConnection: 1s
